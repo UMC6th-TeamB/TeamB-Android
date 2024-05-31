@@ -2,7 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="colorPrimary">#186DEC</color>
-    <color name="gray_color">#E8EAEC</color>
-    <color name="transparent">#00ff0000</color>
+
+    <color name="smupool_blue">#186DEC</color>
+    <color name="smupool_white">#E8EAEC</color>
+    <color name="smupool_skyblue">#74A6D3</color>
+    <color name="smupool_navy">#2D415F</color>
+    <color name="smupool_gray">#404040</color>
 </resources>

@@ -1,24 +1,16 @@
 package com.smumc.smumc_6th_teamc_android.map
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.smumc.smumc_6th_teamc_android.R
 import com.smumc.smumc_6th_teamc_android.databinding.ActivityMapBinding
-import com.smumc.smumc_6th_teamc_android.databinding.ItemLocationBinding
-import java.text.FieldPosition
 
 class MapActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMapBinding
     private var stationDatas = ArrayList<Location>()
+    private var numPeopleDatas = ArrayList<People>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +24,13 @@ class MapActivity : AppCompatActivity() {
 
         binding.mapMain.setOnTouchListener { _, event ->
             setLocationStatus(false)
+            setTimeStatus(false)
+            setPeopleStatus(false)
+            setMatchingStatus(false)
             true
         }
 
-        // 데이터 리스트 생성 더미 데이터
+        // 장소 데이터 리스트 생성 더미 데이터
         stationDatas.apply{
             add(Location("남영역 1번출구"))
             add(Location("홍제역 1번출구"))
@@ -46,7 +41,15 @@ class MapActivity : AppCompatActivity() {
             add(Location("시청역 4번출구"))
         }
 
-        // Adapter와 Datalist 연결
+        // 인원수 데이터 리스트 생성 더미 데이터
+        numPeopleDatas.apply{
+            add(People("4명"))
+            add(People("3명"))
+            add(People("2명"))
+            add(People("상관없음"))
+        }
+
+        // Location Adapter와 Datalist 연결
         val locationRVAdapter = LocationRVAdapter(stationDatas)
         binding.mapLocationRv.adapter = locationRVAdapter
         binding.mapLocationRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -55,18 +58,76 @@ class MapActivity : AppCompatActivity() {
             override fun onItemClick(position: Int){
                 locationRVAdapter.clickItem(position)
             }
+            override fun onCheckIconClick() {
+                setLocationStatus(false)
+                setTimeStatus(true)
+            }
+        })
+
+        // 시간 설정 선택 버튼 클릭 시
+        binding.mapSettingTimeBtn.setOnClickListener {
+            setTimeStatus(false)
+            setPeopleStatus(true)
+        }
+
+        // People Adapter와 Datalist 연결
+        val peopleRVAdapter = PeopleRVAdapter(numPeopleDatas)
+        binding.mapSelectPeopleRv.adapter = peopleRVAdapter
+        binding.mapSelectPeopleRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        peopleRVAdapter.setMyItemClickListener(object: PeopleRVAdapter.PeopleItemClickListener{
+            override fun onItemClick(position: Int){
+                peopleRVAdapter.clickItem(position)
+            }
+            override fun onCheckIconClick() {
+                setPeopleStatus(false)
+                setMatchingStatus(true)
+            }
         })
 
     }
 
+    // 장소 선택 레이아웃 보임 상태
     private fun setLocationStatus(carpool: Boolean){
         if(carpool){
             binding.mapLocationRv.visibility = View.VISIBLE
-            binding.mapLocationPannelLine.visibility = View.VISIBLE
+            binding.mapLocationPannelLineIv.visibility = View.VISIBLE
         }
         else{
             binding.mapLocationRv.visibility = View.GONE
-            binding.mapLocationPannelLine.visibility = View.GONE
+            binding.mapLocationPannelLineIv.visibility = View.GONE
+        }
+    }
+
+    // 시간 선택 레이아웃 보임 상태
+    private fun setTimeStatus(select: Boolean){
+        if(select){
+            binding.mapSettingTimeLo.visibility = View.VISIBLE
+        }
+        else{
+            binding.mapSettingTimeLo.visibility = View.GONE
+        }
+    }
+
+    // 인원수 선택 레이아웃 보임 상태
+    private fun setPeopleStatus(select: Boolean){
+        if(select){
+            binding.mapSelectPeopleRv.visibility = View.VISIBLE
+            binding.mapPeoplePannelLineIv.visibility = View.VISIBLE
+        }
+        else{
+            binding.mapSelectPeopleRv.visibility = View.GONE
+            binding.mapPeoplePannelLineIv.visibility = View.GONE
+        }
+    }
+
+    // 매칭 화면 레이아웃 보임 상태
+    private fun setMatchingStatus(select: Boolean){
+        if(select){
+            binding.mapCarpoolMatchingLo.visibility = View.VISIBLE
+        }
+        else{
+            binding.mapCarpoolMatchingLo.visibility = View.GONE
         }
     }
 }
