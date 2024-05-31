@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
+<!--     <solid android:color="#FFFFFF" />
+    <corners android:radius="32dp" />
+</shape> -->
 
     <!-- 내부를 투명하게 설정 -->
     <solid android:color="#00000000"/>
