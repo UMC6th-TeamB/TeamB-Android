@@ -4,7 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.smumc.smumc_6th_teamc_android.databinding.ActivityMainBinding
-import com.smumc.smumc_6th_teamc_android.map.MapActivity
+import com.smumc.smumc_6th_teamc_android.login.LoginActivity
+import com.smumc.smumc_6th_teamc_android.login.SignUpActivity
+import com.smumc.smumc_6th_teamc_android.mypage.MypageActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,8 +16,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val intent = Intent(this, MapActivity::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
-        finish()
     }
 }
