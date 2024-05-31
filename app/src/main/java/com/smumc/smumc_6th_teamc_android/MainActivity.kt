@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.smumc.smumc_6th_teamc_android.chat.ChatActivity
 import com.smumc.smumc_6th_teamc_android.databinding.ActivityMainBinding
+import com.smumc.smumc_6th_teamc_android.login.LoginActivity
+import com.smumc.smumc_6th_teamc_android.login.SignUpActivity
+import com.smumc.smumc_6th_teamc_android.mypage.MypageActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,10 +18,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // ChatActivity를 DISPLAY_MODE 값 1을 전달하며 시작
-        val intent = Intent(this, ChatActivity::class.java).apply {
-            putExtra("DISPLAY_MODE", 1)
-        }
+
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
 }
