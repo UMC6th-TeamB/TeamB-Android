@@ -10,8 +10,8 @@ import com.smumc.smumc_6th_teamc_android.databinding.ItemLocationBinding
 class LocationRVAdapter(private val stationList: ArrayList<Location>): RecyclerView.Adapter<LocationRVAdapter.ViewHolder>() {
 
     interface MyItemClickListener {
-        fun onItemClick(position: Int)
-        fun onCheckIconClick()
+        fun onItemClick(position: Int) // 각 장소 아이템 클릭 시 반응하는 함수
+        fun onCheckIconClick() //체크 이미지 클릭 시 반응하는 함수
     }
 
     // 외부에서 전달받은 Listener 객체를 Adapter에서 사용할 수 있도록 따로 저장할 변수 선언
@@ -23,6 +23,7 @@ class LocationRVAdapter(private val stationList: ArrayList<Location>): RecyclerV
     // 현재 선택된 아이템의 인덱스를 저장할 변수
     private var selectedLocation = RecyclerView.NO_POSITION
 
+    // 현재 클릭한 장소의 인덱스를 selectedLocation 변수에 저장하고, 이전의 클릭된 인덱스를 previousPosition에 저장
     fun clickItem(position: Int) {
         val previousPosition = selectedLocation
         selectedLocation = position
@@ -39,15 +40,15 @@ class LocationRVAdapter(private val stationList: ArrayList<Location>): RecyclerV
     override fun onBindViewHolder(holder: LocationRVAdapter.ViewHolder, position: Int) {
         holder.bind(stationList[position])
 
-        // 장소 선택
+        // 장소 아이템 선택에 따른 반응
         holder.itemView.isSelected = (selectedLocation == position)
         holder.binding.itemMapLocation.setOnClickListener {
             mItemClickListener.onItemClick(position)
             clickItem(position)
         }
-        holder.select(holder.itemView.isSelected)
+        holder.select(holder.itemView.isSelected) //선택된 장소의 인덱스 부분을 select(true)로 함
 
-        // 선택한 장소의 check icon 클릭
+        // 선택한 장소의 check icon 클릭했을 때의 반응
         holder.binding.itemMapSelectLocationIv.setOnClickListener {
             mItemClickListener.onCheckIconClick()
         }
@@ -61,11 +62,11 @@ class LocationRVAdapter(private val stationList: ArrayList<Location>): RecyclerV
         }
 
         fun select(isSelect: Boolean) {
-            if (isSelect) {
+            if (isSelect) { // 선택했을 때의 반응
                 binding.itemMapLocation.setBackgroundColor(itemView.context.getColor(R.color.smupool_white))
                 binding.itemMapLocationTv.setTextColor(itemView.context.getColor(R.color.smupool_blue))
                 binding.itemMapSelectLocationIv.visibility = View.VISIBLE
-            } else {
+            } else { // 선택하지 않았을 때의 반응
                 binding.itemMapLocation.setBackgroundColor(itemView.context.getColor(android.R.color.transparent))
                 binding.itemMapLocationTv.setTextColor(itemView.context.getColor(android.R.color.black))
                 binding.itemMapSelectLocationIv.visibility = View.GONE

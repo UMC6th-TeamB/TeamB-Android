@@ -161,6 +161,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+        <TimePicker
+            android:id="@+id/map_setting_time_picker_tp"
+            android:layout_width="wrap_content"
+            android:layout_height="160dp"
+            android:timePickerMode="spinner"
+            android:theme="@style/InfoTimePickerTheme"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toTopOf="@id/map_setting_time_line2_iv"
+            app:layout_constraintStart_toStartOf="@id/map_setting_time_lo"
+            app:layout_constraintEnd_toEndOf="@id/map_setting_time_lo"/>
+
         <ImageView
             android:id="@+id/map_setting_time_line3_iv"
             android:layout_width="287dp"
@@ -183,6 +194,16 @@
             app:layout_constraintBottom_toBottomOf="@id/map_setting_time_lo"
             app:layout_constraintStart_toEndOf="@id/map_setting_time_cancel_btn"
             app:layout_constraintEnd_toEndOf="@id/map_setting_time_lo" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="2dp"
+            android:layout_height="60dp"
+            android:background="@color/smupool_white"
+            app:layout_constraintTop_toTopOf="@id/map_setting_time_cancel_btn"
+            app:layout_constraintBottom_toBottomOf="@id/map_setting_time_cancel_btn"
+            app:layout_constraintStart_toEndOf="@id/map_setting_time_cancel_btn"
+            app:layout_constraintEnd_toStartOf="@id/map_setting_time_btn"/>
 
         <Button
             android:id="@+id/map_setting_time_cancel_btn"

@@ -10,8 +10,8 @@ import com.smumc.smumc_6th_teamc_android.databinding.ItemPeopleBinding
 class PeopleRVAdapter (private val numList: ArrayList<People>): RecyclerView.Adapter<PeopleRVAdapter.ViewHolder>() {
 
     interface PeopleItemClickListener {
-        fun onItemClick(position: Int)
-        fun onCheckIconClick()
+        fun onItemClick(position: Int) // 각 인원수 아이템 클릭 시 반응하는 함수
+        fun onCheckIconClick() //체크 이미지 클릭 시 반응하는 함수
     }
 
     // 외부에서 전달받은 Listener 객체를 Adapter에서 사용할 수 있도록 따로 저장할 변수 선언
@@ -23,6 +23,7 @@ class PeopleRVAdapter (private val numList: ArrayList<People>): RecyclerView.Ada
     // 현재 선택된 아이템의 인덱스를 저장할 변수
     private var selectedLocation = RecyclerView.NO_POSITION
 
+    // 현재 클릭한 인원수의 인덱스를 selectedLocation 변수에 저장하고, 이전의 클릭된 인덱스를 previousPosition에 저장
     fun clickItem(position: Int) {
         val previousPosition = selectedLocation
         selectedLocation = position
@@ -39,7 +40,7 @@ class PeopleRVAdapter (private val numList: ArrayList<People>): RecyclerView.Ada
     override fun onBindViewHolder(holder: PeopleRVAdapter.ViewHolder, position: Int) {
         holder.bind(numList[position])
 
-        // 인원 선택
+        // 인원수 아이템 선택에 따른 반응
         holder.itemView.isSelected = (selectedLocation == position)
         holder.binding.itemMapSelectPeople.setOnClickListener {
             mItemClickListener.onItemClick(position)
@@ -47,7 +48,7 @@ class PeopleRVAdapter (private val numList: ArrayList<People>): RecyclerView.Ada
         }
         holder.select(holder.itemView.isSelected)
 
-        // 선택한 장소의 check icon 클릭
+        // 선택한 인원수의 check icon 클릭했을 때의 반응
         holder.binding.itemMapSelectPeopleIv.setOnClickListener {
             mItemClickListener.onCheckIconClick()
         }
@@ -61,11 +62,11 @@ class PeopleRVAdapter (private val numList: ArrayList<People>): RecyclerView.Ada
         }
 
         fun select(isSelect: Boolean) {
-            if (isSelect) {
+            if (isSelect) { // 선택했을 때의 반응
                 binding.itemMapSelectPeople.setBackgroundColor(itemView.context.getColor(R.color.smupool_white))
                 binding.itemMapSelectPeopleTv.setTextColor(itemView.context.getColor(R.color.smupool_blue))
                 binding.itemMapSelectPeopleIv.visibility = View.VISIBLE
-            } else {
+            } else { // 선택하지 않았을 때의 반응
                 binding.itemMapSelectPeople.setBackgroundColor(itemView.context.getColor(android.R.color.transparent))
                 binding.itemMapSelectPeopleTv.setTextColor(itemView.context.getColor(android.R.color.black))
                 binding.itemMapSelectPeopleIv.visibility = View.GONE
