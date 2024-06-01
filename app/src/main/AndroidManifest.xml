@@ -18,6 +18,9 @@
         <activity android:name=".login.LoginActivity"
             android:exported="false"/>
         <activity
+            android:name=".map.MapActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

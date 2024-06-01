@@ -12,6 +12,5 @@ class MapCurrentMatchActivity : AppCompatActivity(){
         binding = ActivityMapCurrentMatchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
     }
 }
