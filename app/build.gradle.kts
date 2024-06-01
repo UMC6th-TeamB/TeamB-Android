@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
 }
 
 android {
@@ -76,8 +75,9 @@ dependencies {
     //accompanist-permissions (권한 요청 라이브러리)
     implementation("com.google.accompanist:accompanist-permissions:0.34.0")
 
-    // RoomDB
-    implementation("androidx.room:room-ktx:2.6.1")
-    implementation("androidx.room:room-runtime:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
+    //coroutines ()
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1")
+
+    implementation("com.google.android.catalog.framework:casa-base:0.5.1")
 }
