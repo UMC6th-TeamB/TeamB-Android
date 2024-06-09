@@ -5,7 +5,6 @@ import android.content.ContentValues.TAG
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -30,7 +29,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.smumc.smumc_6th_teamc_android.mypage.MypageActivity
+
 
 class MapActivity : AppCompatActivity() {
 
@@ -59,23 +58,11 @@ class MapActivity : AppCompatActivity() {
         initTimePicker() //TimePicker 초기화
         requestPermissions(permissionList,0) //지도 및 위치 권한 허용 request
 
-        // 마이페이지 버튼 클릭
-        binding.mapMypageBtn.setOnClickListener {
-            val intent = Intent(this, MypageActivity::class.java)
-            startActivity(intent)
-        }
-
-        // 카풀하기 버튼 클릭 리스너 설정
-        binding.mapCarpoolBtn.setOnClickListener {
-            setLocationStatus(true)
-        }
-
         // Google MapFragment 객체
-        val supportMapFragment = supportFragmentManager.findFragmentById(R.id.map_main) as SupportMapFragment?
+        val supportMapFragment = supportFragmentManager.findFragmentById(R.id.map_main) as SupportMapFragment
 
         // Google Map 사용 준비 완료 시 반응하는 리스너
-        supportMapFragment?.getMapAsync {
-            Log.d("MAPPPPPPP", "good")
+        supportMapFragment.getMapAsync {
             val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager // 위치 정보 관리하는 객체
 
             // 구글맵 객체 변수에 담아서 사용
@@ -361,7 +348,6 @@ class MapActivity : AppCompatActivity() {
 
     // 현재 위치 값 가져오는 함수
     fun getMyLocation(){
-        Log.d("MAPPPPPPP2", "good2")
         // 두 권한에 대하여 허용 되어 있으면
         if(checkLocationPermission()){
 

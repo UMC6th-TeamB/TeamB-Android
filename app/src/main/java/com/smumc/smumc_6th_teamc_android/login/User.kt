@@ -9,9 +9,5 @@ data class User(
     var studentId : String, //학번
     var password : String //비번
 ){
-<<<<<<< HEAD
-    // 사용자가 추가될 때마다 자동적으로 카운트
-=======
->>>>>>> 99f318c (feat: 회원가입 및 로그인 인증 구현)
     @PrimaryKey(autoGenerate = true) var id : Int = 0
 }

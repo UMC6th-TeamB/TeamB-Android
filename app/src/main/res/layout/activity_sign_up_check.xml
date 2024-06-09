@@ -3,8 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+<<<<<<< HEAD
     android:background="@color/ic_smupool_background"
     android:id="@+id/signUpCheckActivity">
+=======
+    android:background="@color/ic_smupool_background">
+>>>>>>> 0920182 (feat: add SignUpCheckActivity)
 
     <TextView
         android:id="@+id/signupCheck_tv"
@@ -23,6 +27,7 @@
         android:id="@+id/userId_tv"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+<<<<<<< HEAD
         android:text="202412345@sangmyung.kr로"
         android:textSize="16sp"
         android:textColor="@color/smupool_skyblue"
@@ -32,6 +37,28 @@
         app:layout_constraintTop_toBottomOf="@+id/signupCheck_tv"/>
 
     <TextView
+=======
+        android:text="202412345"
+        android:textSize="16sp"
+        android:textColor="@color/smupool_skyblue"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="85dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signupCheck_tv"/>
+
+    <TextView
+        android:id="@+id/userEmail_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text=" @sangmyung.kr로"
+        android:textSize="16sp"
+        android:textColor="@color/smupool_skyblue"
+        app:layout_constraintStart_toEndOf="@+id/userId_tv"
+        app:layout_constraintBottom_toBottomOf="@+id/userId_tv"
+        app:layout_constraintTop_toTopOf="@+id/userId_tv"/>
+
+    <TextView
+>>>>>>> 0920182 (feat: add SignUpCheckActivity)
         android:id="@+id/checkEmail_tv"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -63,6 +90,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/smufl1_iv"/>
 
+<<<<<<< HEAD
     <TextView
         android:id="@+id/timer_tv"
         android:layout_width="wrap_content"
@@ -75,22 +103,34 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/finishCheck_tv"/>
 
+=======
+>>>>>>> 0920182 (feat: add SignUpCheckActivity)
     <EditText
         android:id="@+id/signUp_check_number_et"
         android:layout_width="312dp"
         android:layout_height="49dp"
         android:hint="인증번호"
+<<<<<<< HEAD
         android:inputType="text"
         android:imeOptions="actionDone"
+=======
+>>>>>>> 0920182 (feat: add SignUpCheckActivity)
         android:textColorHint="@color/smupool_navy"
         android:textSize="15sp"
         android:textStyle="bold"
         android:paddingLeft="10dp"
         android:background="@drawable/rounded_edittext"
+<<<<<<< HEAD
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timer_tv"/>
+=======
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/finishCheck_tv"/>
+>>>>>>> 0920182 (feat: add SignUpCheckActivity)
 
     <EditText
         android:id="@+id/signUp_check_number_et_er"
@@ -103,6 +143,7 @@
         android:textStyle="bold"
         android:paddingLeft="10dp"
         android:background="@drawable/rounded_edittext_error"
+<<<<<<< HEAD
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -120,6 +161,67 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUp_check_number_et_er"/>
+=======
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/finishCheck_tv"/>
+
+        <TextView
+            android:id="@+id/check_error"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="인증되지 않았습니다. 인증번호를 확인하세요."
+            android:textSize="10sp"
+            android:textColor="#FF0000"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUp_check_number_et_er"/>
+
+    <TextView
+        android:id="@+id/terms_use"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="이용 약관"
+        android:textSize="13sp"
+        android:textColor="@color/smupool_navy"
+        android:layout_marginTop="200dp"
+        app:layout_constraintStart_toStartOf="@+id/signUp_start_bt"
+        app:layout_constraintTop_toBottomOf="@+id/smufl1_iv"/>
+
+    <ImageView
+        android:id="@+id/vector_iv1"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:src="@drawable/vector6"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@+id/terms_use"
+        app:layout_constraintTop_toTopOf="@+id/terms_use"
+        app:layout_constraintBottom_toBottomOf="@+id/terms_use"/>
+
+    <TextView
+        android:id="@+id/personal_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="개인정보처리방침"
+        android:textSize="13sp"
+        android:textColor="@color/smupool_navy"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@+id/terms_use"
+        app:layout_constraintTop_toBottomOf="@+id/terms_use"/>
+
+    <ImageView
+        android:id="@+id/vector_iv2"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:src="@drawable/vector6"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@+id/personal_tv"
+        app:layout_constraintTop_toTopOf="@+id/personal_tv"
+        app:layout_constraintBottom_toBottomOf="@+id/personal_tv"/>
+>>>>>>> 0920182 (feat: add SignUpCheckActivity)
 
     <android.widget.Button
         android:id="@+id/signUp_start_bt"
@@ -130,9 +232,17 @@
         android:textColor="@color/ic_smupool_background"
         android:background="@drawable/rounded_textview_blue"
         android:gravity="center"
+<<<<<<< HEAD
         android:layout_marginBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+=======
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personal_tv"
+>>>>>>> 0920182 (feat: add SignUpCheckActivity)
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
