@@ -6,7 +6,7 @@
     android:background="@color/ic_smupool_background">
 
     <TextView
-        android:id="@+id/signup_tv"
+        android:id="@+id/signupCheck_tv"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:text="상명대 학생 인증"
@@ -19,16 +19,38 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/signup_method_tv"
+        android:id="@+id/userId_tv"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="샘물 통합 로그인과 동일합니다."
+        android:text="202412345"
         android:textSize="16sp"
         android:textColor="@color/smupool_skyblue"
         android:layout_marginTop="5dp"
+        android:layout_marginStart="85dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signupCheck_tv"/>
+
+    <TextView
+        android:id="@+id/userEmail_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text=" @sangmyung.kr로"
+        android:textSize="16sp"
+        android:textColor="@color/smupool_skyblue"
+        app:layout_constraintStart_toEndOf="@+id/userId_tv"
+        app:layout_constraintBottom_toBottomOf="@+id/userId_tv"
+        app:layout_constraintTop_toTopOf="@+id/userId_tv"/>
+
+    <TextView
+        android:id="@+id/checkEmail_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="인증메일을 발송하였습니다."
+        android:textSize="16sp"
+        android:textColor="@color/smupool_skyblue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signup_tv"/>
+        app:layout_constraintTop_toBottomOf="@+id/userId_tv"/>
 
     <ImageView
         android:id="@+id/smufl1_iv"
@@ -38,87 +60,62 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@mipmap/ic_smupool"
         android:layout_marginTop="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/signup_method_tv"/>
+        app:layout_constraintTop_toBottomOf="@+id/userId_tv"/>
 
-    <EditText
-        android:id="@+id/signUp_student_number_et"
-        android:layout_width="312dp"
-        android:layout_height="49dp"
-        android:hint="학번"
-        android:textColorHint="@color/smupool_navy"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:paddingLeft="10dp"
-        android:background="@drawable/rounded_edittext"
-        android:layout_marginTop="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/smufl1_iv"/>
-
-    <!-- 인증 오류 발생 시 (일단 gone으로 설정했어요) -->
-    <EditText
-        android:id="@+id/signUp_student_number_et_er"
-        android:layout_width="312dp"
-        android:layout_height="49dp"
-        android:hint="학번"
-        android:textColorHint="#FF0000"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:paddingLeft="10dp"
-        android:background="@drawable/rounded_edittext_error"
-        android:layout_marginTop="30dp"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/smufl1_iv"/>
-
-    <EditText
-        android:id="@+id/signUp_password_et"
-        android:layout_width="312dp"
-        android:layout_height="49dp"
-        android:hint="비밀번호"
-        android:textColorHint="@color/smupool_navy"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:inputType="textPassword"
-        android:paddingLeft="10dp"
-        android:background="@drawable/rounded_edittext"
-        android:layout_marginTop="13dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUp_student_number_et"/>
-
-    <!-- 인증 오류 발생 시 (일단 gone으로 설정했어요) -->
-    <EditText
-        android:id="@+id/signUp_password_et_er"
-        android:layout_width="312dp"
-        android:layout_height="49dp"
-        android:hint="비밀번호"
-        android:textColorHint="#FF0000"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:inputType="textPassword"
-        android:paddingLeft="10dp"
-        android:background="@drawable/rounded_edittext_error"
-        android:layout_marginTop="13dp"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUp_student_number_et_er"/>
-
-    <!-- 인증 오류 발생 시 (일단 gone으로 설정했어요) -->
     <TextView
-        android:id="@+id/signUp_error"
+        android:id="@+id/finishCheck_tv"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="인증되지 않았습니다. 샘물 ID/PW를 확인하세요."
-        android:textSize="10sp"
-        android:textColor="#FF0000"
-        android:visibility="gone"
-        android:layout_marginTop="10dp"
+        android:text="3분내로 인증을 완료해주세요"
+        android:textSize="16sp"
+        android:textColor="@color/smupool_skyblue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUp_password_et_er"/>
+        app:layout_constraintTop_toBottomOf="@+id/smufl1_iv"/>
+
+    <EditText
+        android:id="@+id/signUp_check_number_et"
+        android:layout_width="312dp"
+        android:layout_height="49dp"
+        android:hint="인증번호"
+        android:textColorHint="@color/smupool_navy"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:paddingLeft="10dp"
+        android:background="@drawable/rounded_edittext"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/finishCheck_tv"/>
+
+    <EditText
+        android:id="@+id/signUp_check_number_et_er"
+        android:layout_width="312dp"
+        android:layout_height="49dp"
+        android:hint="인증번호"
+        android:visibility="gone"
+        android:textColorHint="#FF0000"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:paddingLeft="10dp"
+        android:background="@drawable/rounded_edittext_error"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/finishCheck_tv"/>
+
+        <TextView
+            android:id="@+id/check_error"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="인증되지 않았습니다. 인증번호를 확인하세요."
+            android:textSize="10sp"
+            android:textColor="#FF0000"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUp_check_number_et_er"/>
 
     <TextView
         android:id="@+id/terms_use"

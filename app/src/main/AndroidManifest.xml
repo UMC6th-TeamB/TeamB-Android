@@ -17,7 +17,11 @@
             android:exported="false" />
         <activity android:name=".login.LoginActivity"
             android:exported="false"/>
+        <activity android:name=".login.SignUpCheckActivity"
+            android:exported="false"/>
         <activity android:name=".map.MapActivity"
+            android:exported="false"/>
+        <activity android:name=".mypage.MypageActivity"
             android:exported="false"/>
         <activity
             android:name=".MainActivity"

@@ -96,7 +96,7 @@
 
         <EditText
             android:id="@+id/nameChange_ev"
-            android:layout_width="260dp"
+            android:layout_width="230dp"
             android:layout_height="0dp"
             android:hint="채팅 닉네임 변경하기"
             android:textColorHint="#767676"

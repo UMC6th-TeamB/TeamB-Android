@@ -126,7 +126,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login(){ // 로그인 진행 함수
-
         // MapActivity.kt로 이동
         val intent = Intent(this, MapActivity::class.java)
         startActivity(intent)
@@ -135,9 +134,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun relogin(){ // 로그인 진행 함수 (1번 이상 비정상적으로 입력했을 경우)
 
-        // 다시 학번, 비밀번호를 입력한 후 그 값이 옳은지 확인하는 함수 호출 (reloginCheck)
-            // xml에서 editText 입력이 loginStudentNumberEt, loginStudentNumberEtEr 두 가지로 나누어져 있기 때문에
-            // 1번 이상 비정상적으로 입력했을 경우 loginStudentNumberEtEr에 입력
+        // xml에서 editText 입력이 loginStudentNumberEt, loginStudentNumberEtEr 두 가지로 나누어져 있기 때문에
+        // 1번 이상 비정상적으로 입력했을 경우 loginStudentNumberEtEr에 입력
         if(reloginCheck()){ // true: 로그인 진행
             // MapActivity.kt로 이동
             val intent = Intent(this, MapActivity::class.java)
