@@ -4,8 +4,14 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/map_main"
     tools:context=".map.MapActivity">
+
+    <fragment
+        android:id="@+id/map_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".map.MapActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
     
     <ImageView
         android:id="@+id/map_current_location_btn"

@@ -7,14 +7,45 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.NumberPicker
 import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.maps.SupportMapFragment
 import com.smumc.smumc_6th_teamc_android.R
 import com.smumc.smumc_6th_teamc_android.databinding.ActivityMapBinding
+import android.Manifest
+import android.annotation.SuppressLint
+import androidx.annotation.RequiresPermission
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import com.smumc.smumc_6th_teamc_android.map.PermissionBox
+import com.google.android.catalog.framework.annotations.Sample
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.maps.MapsInitializer
+import com.google.android.gms.tasks.CancellationTokenSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 
 class MapActivity : AppCompatActivity() {
@@ -27,6 +58,8 @@ class MapActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // 구글 지도 셋팅
+        MapsInitializer.initialize(this, MapsInitializer.Renderer.LATEST, null)
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -54,16 +87,6 @@ class MapActivity : AppCompatActivity() {
         // 카풀하기 버튼 클릭 리스너 설정
         binding.mapCarpoolBtn.setOnClickListener {
             setLocationStatus(true)
-        }
-
-        // 지도 영역 터치 시 띄어진 팝업창들 사라지도록
-        binding.mapMain.setOnTouchListener { _, event ->
-            setLocationStatus(false)
-            setTimeStatus(false)
-            setPeopleStatus(false)
-            setMatchingStatus(false)
-
-            true
         }
 
         // 장소 데이터 리스트 생성 더미 데이터
@@ -222,5 +245,95 @@ class MapActivity : AppCompatActivity() {
             Log.e(TAG, "Exception: $e")
         }
     }
+
+    //위치 권한을 요청하는 함수
+    @SuppressLint("MissingPermission")
+    @Composable
+    fun CurrentLocationScreen() {
+        //권한 목록
+        val permissions = listOf(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+        )
+        PermissionBox(
+            permissions = permissions,
+            requiredPermissions = listOf(permissions.first()),
+            onGranted = {
+                CurrentLocationContent(
+                    usePreciseLocation = it.contains(Manifest.permission.ACCESS_FINE_LOCATION),
+                )
+            },
+        )
+    }
+
+    @RequiresPermission(
+        anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION],
+    )
+    @Composable
+    fun CurrentLocationContent(usePreciseLocation: Boolean) { //위치 권한이 있는 경우 실행하는 함수
+        val scope = rememberCoroutineScope()
+        val context = LocalContext.current
+        val locationClient = remember {
+            LocationServices.getFusedLocationProviderClient(context)
+        }
+        var locationInfo by remember {
+            mutableStateOf("")
+        }
+
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .animateContentSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Button(
+                onClick = {
+                    // 마지막으로 알려진 위치 가져오기
+                    scope.launch(Dispatchers.IO) {
+                        val result = locationClient.lastLocation.await()
+                        locationInfo = if (result == null) {
+                            "No last known location. Try fetching the current location first"
+                        } else {
+                            "Current location is \n" + "lat : ${result.latitude}\n" +
+                                    "long : ${result.longitude}\n" + "fetched at ${System.currentTimeMillis()}"
+                        }
+                    }
+                },
+            ) {
+                Text("Get last known location")
+            }
+
+            Button(
+                onClick = {
+                    // 더 정확하거나 최신 위치 가져오기
+                    scope.launch(Dispatchers.IO) {
+                        val priority = if (usePreciseLocation) {
+                            Priority.PRIORITY_HIGH_ACCURACY
+                        } else {
+                            Priority.PRIORITY_BALANCED_POWER_ACCURACY
+                        }
+                        val result = locationClient.getCurrentLocation(
+                            priority,
+                            CancellationTokenSource().token,
+                        ).await()
+                        result?.let { fetchedLocation ->
+                            locationInfo = //위치 정보를 저장하는 상태
+                                "Current location is \n" + "lat : ${fetchedLocation.latitude}\n" +
+                                        "long : ${fetchedLocation.longitude}\n" + "fetched at ${System.currentTimeMillis()}"
+                        }
+                    }
+                },
+            ) {
+                Text(text = "Get current location")
+            }
+            Text(
+                text = locationInfo,
+            )
+        }
+    }
+
+
 }
 
