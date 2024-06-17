@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#186DEC"/>
-
-    <!--내부와 선을 피그마에서 작성된 색으로 설정-->
-    <stroke android:color="#186DEC"
-        android:width="1dp"/>
+    <solid android:color="@color/smupool_blue"/>
 
     <!-- 둥근 모서리 반경 설정 -->
     <corners android:radius="10dp"/>
