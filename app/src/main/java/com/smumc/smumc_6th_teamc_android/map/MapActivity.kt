@@ -5,6 +5,7 @@ import android.content.ContentValues.TAG
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -29,7 +30,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-
+import com.smumc.smumc_6th_teamc_android.mypage.MypageActivity
 
 class MapActivity : AppCompatActivity() {
 
@@ -57,6 +58,17 @@ class MapActivity : AppCompatActivity() {
         initClickListener() //ClickListener 모음
         initTimePicker() //TimePicker 초기화
         requestPermissions(permissionList,0) //지도 및 위치 권한 허용 request
+
+        // 마이페이지 버튼 클릭
+        binding.mapMypageBtn.setOnClickListener {
+            val intent = Intent(this, MypageActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 카풀하기 버튼 클릭 리스너 설정
+        binding.mapCarpoolBtn.setOnClickListener {
+            setLocationStatus(true)
+        }
 
         // Google MapFragment 객체
         val supportMapFragment = supportFragmentManager.findFragmentById(R.id.map_main) as SupportMapFragment
