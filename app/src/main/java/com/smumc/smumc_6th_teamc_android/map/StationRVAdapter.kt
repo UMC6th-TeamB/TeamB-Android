@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.smumc.smumc_6th_teamc_android.R
 import com.smumc.smumc_6th_teamc_android.databinding.ItemLocationBinding
 
-class LocationRVAdapter(private val stationList: ArrayList<Location>): RecyclerView.Adapter<LocationRVAdapter.ViewHolder>() {
+class StationRVAdapter(private val stationList: ArrayList<Station>): RecyclerView.Adapter<StationRVAdapter.ViewHolder>() {
 
     interface MyItemClickListener {
         fun onItemClick(position: Int) // 각 장소 아이템 클릭 시 반응하는 함수
@@ -31,13 +31,13 @@ class LocationRVAdapter(private val stationList: ArrayList<Location>): RecyclerV
         notifyItemChanged(selectedLocation)
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): LocationRVAdapter.ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): StationRVAdapter.ViewHolder {
         // itemview 객체 생성
         val binding: ItemLocationBinding = ItemLocationBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: LocationRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: StationRVAdapter.ViewHolder, position: Int) {
         holder.bind(stationList[position])
 
         // 장소 아이템 선택에 따른 반응
@@ -57,7 +57,7 @@ class LocationRVAdapter(private val stationList: ArrayList<Location>): RecyclerV
     override fun getItemCount(): Int = stationList.size
 
     inner class ViewHolder(val binding: ItemLocationBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(location: Location) {
+        fun bind(location: Station) {
             binding.itemMapLocationTv.text = location.station
         }
 
