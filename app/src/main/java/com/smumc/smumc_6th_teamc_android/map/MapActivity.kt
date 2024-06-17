@@ -71,10 +71,11 @@ class MapActivity : AppCompatActivity() {
         }
 
         // Google MapFragment 객체
-        val supportMapFragment = supportFragmentManager.findFragmentById(R.id.map_main) as SupportMapFragment
+        val supportMapFragment = supportFragmentManager.findFragmentById(R.id.map_main) as SupportMapFragment?
 
         // Google Map 사용 준비 완료 시 반응하는 리스너
-        supportMapFragment.getMapAsync {
+        supportMapFragment?.getMapAsync {
+            Log.d("MAPPPPPPP", "good")
             val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager // 위치 정보 관리하는 객체
 
             // 구글맵 객체 변수에 담아서 사용
@@ -360,6 +361,7 @@ class MapActivity : AppCompatActivity() {
 
     // 현재 위치 값 가져오는 함수
     fun getMyLocation(){
+        Log.d("MAPPPPPPP2", "good2")
         // 두 권한에 대하여 허용 되어 있으면
         if(checkLocationPermission()){
 
