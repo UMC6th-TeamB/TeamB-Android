@@ -11,5 +11,10 @@ class MypageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMypageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 백버튼 클릭 시
+        binding.backIb.setOnClickListener {
+            finish() // 현재 액티비티 종료
+        }
     }
 }
