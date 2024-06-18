@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/ic_smupool_background">
+    android:background="@color/ic_smupool_background"
+    android:id="@+id/signUpActivity">
 
     <TextView
         android:id="@+id/signup_tv"
@@ -49,6 +50,8 @@
         android:textSize="15sp"
         android:textStyle="bold"
         android:paddingLeft="10dp"
+        android:inputType="text"
+        android:imeOptions="actionNext"
         android:background="@drawable/rounded_edittext"
         android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,6 +84,7 @@
         android:textSize="15sp"
         android:textStyle="bold"
         android:inputType="textPassword"
+        android:imeOptions="actionDone"
         android:paddingLeft="10dp"
         android:background="@drawable/rounded_edittext"
         android:layout_marginTop="13dp"
@@ -127,9 +131,9 @@
         android:text="이용 약관"
         android:textSize="13sp"
         android:textColor="@color/smupool_navy"
-        android:layout_marginTop="200dp"
-        app:layout_constraintStart_toStartOf="@+id/signUp_start_bt"
-        app:layout_constraintTop_toBottomOf="@+id/smufl1_iv"/>
+        android:layout_marginBottom="5dp"
+        app:layout_constraintStart_toStartOf="@+id/personal_tv"
+        app:layout_constraintBottom_toTopOf="@+id/personal_tv"/>
 
     <ImageView
         android:id="@+id/vector_iv1"
@@ -148,9 +152,9 @@
         android:text="개인정보처리방침"
         android:textSize="13sp"
         android:textColor="@color/smupool_navy"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="@+id/terms_use"
-        app:layout_constraintTop_toBottomOf="@+id/terms_use"/>
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/signUp_start_bt"
+        app:layout_constraintStart_toStartOf="@+id/signUp_start_bt"/>
 
     <ImageView
         android:id="@+id/vector_iv2"
@@ -159,8 +163,7 @@
         android:src="@drawable/vector6"
         android:layout_marginStart="5dp"
         app:layout_constraintStart_toEndOf="@+id/personal_tv"
-        app:layout_constraintTop_toTopOf="@+id/personal_tv"
-        app:layout_constraintBottom_toBottomOf="@+id/personal_tv"/>
+        app:layout_constraintTop_toTopOf="@+id/personal_tv" />
 
     <android.widget.Button
         android:id="@+id/signUp_start_bt"
@@ -171,11 +174,9 @@
         android:textColor="@color/ic_smupool_background"
         android:background="@drawable/rounded_textview_blue"
         android:gravity="center"
-        android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personal_tv"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
