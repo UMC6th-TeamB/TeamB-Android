@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
+import com.smumc.smumc_6th_teamc_android.R
 import com.smumc.smumc_6th_teamc_android.databinding.ActivityLoginBinding
 import com.smumc.smumc_6th_teamc_android.map.MapActivity
 
@@ -23,7 +25,10 @@ class LoginActivity : AppCompatActivity() {
         // 회원가입 버튼 클릭 시 SingUpActivity(회원가입 화면)으로 이동
         binding.signUpBt.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
+
+            // 슬라이드 애니메이션 적용
+            val options = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_in_left)
+            startActivity(intent, options.toBundle())
         }
 
         // 로그인 버튼 클릭 시
@@ -128,7 +133,10 @@ class LoginActivity : AppCompatActivity() {
     private fun login(){ // 로그인 진행 함수
         // MapActivity.kt로 이동
         val intent = Intent(this, MapActivity::class.java)
-        startActivity(intent)
+
+        // 페이드 효과 적용
+        val options = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out)
+        startActivity(intent, options.toBundle())
         Toast.makeText(this, "로그인에 성공했습니다!", Toast.LENGTH_SHORT).show()
     }
 
@@ -139,7 +147,11 @@ class LoginActivity : AppCompatActivity() {
         if(reloginCheck()){ // true: 로그인 진행
             // MapActivity.kt로 이동
             val intent = Intent(this, MapActivity::class.java)
-            startActivity(intent)
+
+            // 페이드 효과 적용
+            val options = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out)
+            startActivity(intent, options.toBundle())
+
             Toast.makeText(this, "로그인에 성공했습니다!", Toast.LENGTH_SHORT).show()
         }
     }

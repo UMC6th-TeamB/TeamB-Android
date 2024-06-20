@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -121,7 +122,10 @@ class SignUpActivity : AppCompatActivity() {
         // 회원가입 진행 완료 후 로그인 화면으로 이동
         val intent = Intent(this, SignUpCheckActivity::class.java)
         intent.putExtra("studentId", studentId) // 학번 전달
-        startActivity(intent)
+
+        // 슬라이드 효과 적용
+        val options = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_in_left)
+        startActivity(intent, options.toBundle())
     }
 
     private fun resignUp(){ // 회원가입 진행 함수 (1번 이상 비정상적으로 입력했을 경우)
@@ -138,7 +142,10 @@ class SignUpActivity : AppCompatActivity() {
             // 회원가입 진행 완료 후 로그인 화면으로 이동
             val intent = Intent(this, SignUpCheckActivity::class.java)
             intent.putExtra("studentId", studentId) // 학번 전달
-            startActivity(intent)
+
+            // 슬라이드 효과 적용
+            val options = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_in_left)
+            startActivity(intent, options.toBundle())
         }
 
     }
