@@ -121,47 +121,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUp_check_number_et_er"/>
 
-    <TextView
-        android:id="@+id/terms_use"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:text="이용 약관"
-        android:textSize="13sp"
-        android:textColor="@color/smupool_navy"
-        android:layout_marginBottom="5dp"
-        app:layout_constraintStart_toStartOf="@+id/personal_tv"
-        app:layout_constraintBottom_toTopOf="@+id/personal_tv"/>
-
-    <ImageView
-        android:id="@+id/vector_iv1"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:src="@drawable/vector6"
-        android:layout_marginStart="5dp"
-        app:layout_constraintStart_toEndOf="@+id/terms_use"
-        app:layout_constraintTop_toTopOf="@+id/terms_use"
-        app:layout_constraintBottom_toBottomOf="@+id/terms_use"/>
-
-    <TextView
-        android:id="@+id/personal_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:text="개인정보처리방침"
-        android:textSize="13sp"
-        android:textColor="@color/smupool_navy"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/signUp_start_bt"
-        app:layout_constraintStart_toStartOf="@+id/signUp_start_bt"/>
-
-    <ImageView
-        android:id="@+id/vector_iv2"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:src="@drawable/vector6"
-        android:layout_marginStart="5dp"
-        app:layout_constraintStart_toEndOf="@+id/personal_tv"
-        app:layout_constraintTop_toTopOf="@+id/personal_tv" />
-
     <android.widget.Button
         android:id="@+id/signUp_start_bt"
         android:layout_width="312dp"
