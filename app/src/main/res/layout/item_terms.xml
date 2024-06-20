@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="제 1조 (목적)"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="@color/smupool_navy"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이 약관은 카풀 애플리케이션(이하 '서비스')의 이용 조건 및 절차, 회원과 서비스 제공자의 권리와 의무를 규정함을 목적으로 합니다."
+        android:textSize="10sp"
+        android:textColor="@color/smupool_navy"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
