@@ -76,6 +76,17 @@ dependencies {
     //accompanist-permissions (권한 요청 라이브러리)
     implementation("com.google.accompanist:accompanist-permissions:0.34.0")
 
+    // Retrofit
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // OkHttp
+    implementation ("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
+    
+    // WebSocket
+    implementation ("org.java-websocket:Java-WebSocket:1.5.2")
+
     // RoomDB
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.room:room-runtime:2.6.1")
