@@ -7,8 +7,10 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -209,25 +211,25 @@ class SignUpActivity : AppCompatActivity() {
         startActivity(intent, options.toBundle())
     }
 
-    private fun resignUp(){ // 회원가입 진행 함수 (1번 이상 비정상적으로 입력했을 경우)
-
-        // xml에서 editText 입력란이 signUpStudentNumberEt, signUpStudentNumberEtEr 두 가지로 나누어져 있기 때문에
-        // 1번 이상 비정상적으로 입력했을 경우 signUpStudentNumberEtEr에 입력해야 한다.
-        if(resignCheckUp()){ //true: 회원가입 진행
-
-            // 사용자가 입력한 정보를 DB에 저장
-            val userDB = UserDatabase.getInstance(this)!!
-            userDB.userDao().insert(regetUser())
-
-
-            // 회원가입 진행 완료 후 로그인 화면으로 이동
-            val intent = Intent(this, SignUpCheckActivity::class.java)
-            intent.putExtra("studentId", studentId) // 학번 전달
-
-            // 슬라이드 효과 적용
-            val options = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_in_left)
-            startActivity(intent, options.toBundle())
-        }
-
-    }
+//    private fun resignUp(){ // 회원가입 진행 함수 (1번 이상 비정상적으로 입력했을 경우)
+//
+//        // xml에서 editText 입력란이 signUpStudentNumberEt, signUpStudentNumberEtEr 두 가지로 나누어져 있기 때문에
+//        // 1번 이상 비정상적으로 입력했을 경우 signUpStudentNumberEtEr에 입력해야 한다.
+//        if(resignCheckUp()){ //true: 회원가입 진행
+//
+//            // 사용자가 입력한 정보를 DB에 저장
+//            val userDB = UserDatabase.getInstance(this)!!
+//            userDB.userDao().insert(regetUser())
+//
+//
+//            // 회원가입 진행 완료 후 로그인 화면으로 이동
+//            val intent = Intent(this, SignUpCheckActivity::class.java)
+//            intent.putExtra("studentId", studentId) // 학번 전달
+//
+//            // 슬라이드 효과 적용
+//            val options = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_in_left)
+//            startActivity(intent, options.toBundle())
+//        }
+//
+//    }
 }

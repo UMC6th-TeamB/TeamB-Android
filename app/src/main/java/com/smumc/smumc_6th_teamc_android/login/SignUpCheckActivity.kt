@@ -1,16 +1,21 @@
 package com.smumc.smumc_6th_teamc_android.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import com.smumc.smumc_6th_teamc_android.R
 import androidx.core.content.ContextCompat
-import com.smumc.smumc_6th_teamc_android.R
 import com.smumc.smumc_6th_teamc_android.databinding.ActivitySignUpCheckBinding
+import kotlin.concurrent.thread
+
 
 class SignUpCheckActivity: AppCompatActivity() {
 
