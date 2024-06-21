@@ -1,6 +1,16 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/smupool_blue" />
-    <corners
-        android:topLeftRadius="10dp"
-        android:topRightRadius="10dp" />
-</shape>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorControlHighlight"> <!--리플 효과의 색상을 지정-->
+    <item> <!--기본 배경-->
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/smupool_blue" />
+            <corners
+                android:topLeftRadius="10dp"
+                android:topRightRadius="10dp" />
+        </shape>
+    </item>
+    <item android:id="@android:id/mask"> <!--리플 효과 정의-->
+        <shape>
+            <solid android:color="@android:color/white" />
+        </shape>
+    </item>
+</ripple>
