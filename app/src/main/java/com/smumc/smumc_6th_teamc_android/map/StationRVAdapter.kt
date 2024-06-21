@@ -31,6 +31,14 @@ class StationRVAdapter(private val stationList: ArrayList<Station>): RecyclerVie
         notifyItemChanged(selectedLocation)
     }
 
+    // 선택했던 item 초기화하는 메서드
+    fun clearSelection() {
+        val previousPosition = selectedLocation
+        selectedLocation = RecyclerView.NO_POSITION
+        notifyItemChanged(previousPosition)
+        notifyItemChanged(selectedLocation)
+    }
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): StationRVAdapter.ViewHolder {
         // itemview 객체 생성
         val binding: ItemLocationBinding = ItemLocationBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
@@ -74,3 +82,4 @@ class StationRVAdapter(private val stationList: ArrayList<Station>): RecyclerVie
         }
     }
 }
+
