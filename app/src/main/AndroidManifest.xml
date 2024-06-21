@@ -29,6 +29,10 @@
             android:exported="false"/>
         <activity android:name=".map.MapActivity"
             android:exported="false"/>
+        <activity android:name=".mypage.MypageActivity"
+            android:exported="false"/>
+        <activity android:name=".chat.ChatMenuActivity"
+            android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
