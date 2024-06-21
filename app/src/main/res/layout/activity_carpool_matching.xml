@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/map_carpool_matching_lo"
+        android:layout_width="288dp"
+        android:layout_height="260dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/dialog_layout_background"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/map_carpool_matching_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="매칭 중입니다"
+            android:textColor="@color/smupool_navy"
+            android:textFontWeight="500"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@id/map_carpool_matching_lo"
+            app:layout_constraintTop_toTopOf="@id/map_carpool_matching_lo" />
+
+        <TextView
+            android:id="@+id/map_carpool_matching_cancel_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="취소"
+            android:textColor="@color/smupool_gray"
+            android:textFontWeight="500"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@id/map_carpool_matching_lo"
+            app:layout_constraintTop_toTopOf="@id/map_carpool_matching_lo" />
+
+        <TextView
+            android:id="@+id/map_carpool_matching_num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="5dp"
+            android:text="2"
+            android:textColor="@color/smupool_blue"
+            android:textFontWeight="600"
+            android:textSize="40sp"
+            app:layout_constraintEnd_toStartOf="@id/map_carpool_matching_num_simbol_tv"
+            app:layout_constraintTop_toTopOf="@id/map_carpool_matching_title_tv" />
+
+        <TextView
+            android:id="@+id/map_carpool_matching_num_simbol_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="/"
+            android:textColor="@color/smupool_blue"
+            android:textFontWeight="600"
+            android:textSize="40sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/map_carpool_matching_title_tv" />
+
+        <TextView
+            android:id="@+id/map_carpool_matching_select_num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="70dp"
+            android:text="N"
+            android:textColor="@color/smupool_blue"
+            android:textFontWeight="600"
+            android:textSize="40sp"
+            app:layout_constraintStart_toEndOf="@id/map_carpool_matching_num_simbol_tv"
+            app:layout_constraintTop_toTopOf="@id/map_carpool_matching_title_tv" />
+
+        <ImageView
+            android:id="@+id/map_carpool_matching_line_iv"
+            android:layout_width="288dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="60dp"
+            android:src="@drawable/line"
+            app:layout_constraintBottom_toBottomOf="@id/map_carpool_matching_lo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/map_carpool_current_matching_btn"
+            android:layout_width="280dp"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/white"
+            android:text="현재 인원 매칭 요청"
+            android:textColor="@color/smupool_blue"
+            android:textFontWeight="500"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@id/map_carpool_matching_lo"
+            app:layout_constraintEnd_toEndOf="@id/map_carpool_matching_lo"
+            app:layout_constraintStart_toStartOf="@id/map_carpool_matching_lo" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

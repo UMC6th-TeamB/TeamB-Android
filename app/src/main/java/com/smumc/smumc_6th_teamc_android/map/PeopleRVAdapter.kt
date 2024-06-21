@@ -10,8 +10,8 @@ import com.smumc.smumc_6th_teamc_android.databinding.ItemPeopleBinding
 class PeopleRVAdapter (private val numList: ArrayList<People>): RecyclerView.Adapter<PeopleRVAdapter.ViewHolder>() {
 
     interface PeopleItemClickListener {
-        fun onItemClick(position: Int) // 각 인원수 아이템 클릭 시 반응하는 함수
-        fun onCheckIconClick() //체크 이미지 클릭 시 반응하는 함수
+        fun onItemClick(position: Int, people: People) // 각 인원수 아이템 클릭 시 반응하는 함수
+        fun onCheckIconClick(people: People) //체크 이미지 클릭 시 반응하는 함수
     }
 
     // 외부에서 전달받은 Listener 객체를 Adapter에서 사용할 수 있도록 따로 저장할 변수 선언
@@ -31,6 +31,14 @@ class PeopleRVAdapter (private val numList: ArrayList<People>): RecyclerView.Ada
         notifyItemChanged(selectedLocation)
     }
 
+    // 선택했던 item 초기화하는 메서드
+    fun clearSelection() {
+        val previousPosition = selectedLocation
+        selectedLocation = RecyclerView.NO_POSITION
+        notifyItemChanged(previousPosition)
+        notifyItemChanged(selectedLocation)
+    }
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): PeopleRVAdapter.ViewHolder {
         // itemview 객체 생성
         val binding: ItemPeopleBinding = ItemPeopleBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
@@ -43,14 +51,14 @@ class PeopleRVAdapter (private val numList: ArrayList<People>): RecyclerView.Ada
         // 인원수 아이템 선택에 따른 반응
         holder.itemView.isSelected = (selectedLocation == position)
         holder.binding.itemMapSelectPeople.setOnClickListener {
-            mItemClickListener.onItemClick(position)
+            mItemClickListener.onItemClick(position, numList[position])
             clickItem(position)
         }
-        holder.select(holder.itemView.isSelected)
+        holder.select(holder.itemView.isSelected) //선택된 item 표시 효과
 
         // 선택한 인원수의 check icon 클릭했을 때의 반응
         holder.binding.itemMapSelectPeopleIv.setOnClickListener {
-            mItemClickListener.onCheckIconClick()
+            mItemClickListener.onCheckIconClick(numList[position])
         }
     }
 
