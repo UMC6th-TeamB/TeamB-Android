@@ -3,15 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/ic_smupool_background">
-    
+    android:background="@color/ic_smupool_background"
+    android:id="@+id/loginActivity">
+
     <TextView
         android:id="@+id/login_tv"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:text="로그인"
         android:textSize="25sp"
-        android:textColor="#2D415F"
+        android:textColor="@color/smupool_navy"
         android:textStyle="bold"
         android:layout_marginTop="100dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +25,7 @@
         android:layout_height="0dp"
         android:text="샘물 통합 로그인과 동일합니다."
         android:textSize="16sp"
-        android:textColor="#74A6D3"
+        android:textColor="@color/smupool_skyblue"
         android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,16 +40,18 @@
         android:src="@mipmap/ic_smupool"
         android:layout_marginTop="30dp"
         app:layout_constraintTop_toBottomOf="@+id/login_method_tv"/>
-    
+
     <EditText
         android:id="@+id/login_student_number_et"
         android:layout_width="312dp"
         android:layout_height="49dp"
         android:hint="학번"
-        android:textColorHint="#2D415F"
+        android:textColorHint="@color/smupool_navy"
         android:textSize="15sp"
         android:textStyle="bold"
         android:paddingLeft="10dp"
+        android:inputType="text"
+        android:imeOptions="actionNext"
         android:background="@drawable/rounded_edittext"
         android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,9 +80,11 @@
         android:layout_width="312dp"
         android:layout_height="49dp"
         android:hint="비밀번호"
-        android:textColorHint="#2D415F"
+        android:textColorHint="@color/smupool_navy"
         android:textSize="15sp"
         android:textStyle="bold"
+        android:inputType="textPassword"
+        android:imeOptions="actionDone"
         android:paddingLeft="10dp"
         android:background="@drawable/rounded_edittext"
         android:layout_marginTop="13dp"
@@ -96,13 +101,14 @@
         android:textColorHint="#FF0000"
         android:textSize="15sp"
         android:textStyle="bold"
+        android:inputType="textPassword"
         android:paddingLeft="10dp"
         android:background="@drawable/rounded_edittext_error"
         android:layout_marginTop="13dp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_student_number_et"/>
+        app:layout_constraintTop_toBottomOf="@+id/login_student_number_et_er"/>
 
     <android.widget.Button
         android:id="@+id/signUp_bt"
@@ -112,11 +118,11 @@
         android:textSize="13sp"
         android:textColor="#666666"
         android:background="#00000000"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_password_et"/>
-    
+        app:layout_constraintBottom_toTopOf="@+id/login_start_tv"/>
+
     <android.widget.Button
         android:id="@+id/login_start_tv"
         android:layout_width="312dp"
@@ -126,9 +132,9 @@
         android:textColor="@color/ic_smupool_background"
         android:background="@drawable/rounded_textview_blue"
         android:gravity="center"
-        android:layout_marginBottom="60dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
