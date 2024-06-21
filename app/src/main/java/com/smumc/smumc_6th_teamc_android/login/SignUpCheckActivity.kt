@@ -11,6 +11,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import com.smumc.smumc_6th_teamc_android.R
 import com.smumc.smumc_6th_teamc_android.databinding.ActivitySignUpCheckBinding
@@ -115,7 +116,11 @@ class SignUpCheckActivity: AppCompatActivity() {
     private fun singUp(){ // 회원가입 진행 함수
         // 회원가입 진행 완료 후 로그인 화면으로 이동
         val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
+
+        // 슬라이드 효과 적용
+        val options = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_in_left)
+        startActivity(intent, options.toBundle())
+
         Toast.makeText(this, "인증을 성공했습니다!", Toast.LENGTH_SHORT).show()
         //finish()
     }
