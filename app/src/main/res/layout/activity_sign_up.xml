@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:text="상명대 학생 인증"
         android:textSize="25sp"
-        android:textColor="@color/smupool_navy"
+        android:textColor="#2D415F"
         android:textStyle="bold"
         android:layout_marginTop="100dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
         android:layout_height="0dp"
         android:text="샘물 통합 로그인과 동일합니다."
         android:textSize="16sp"
-        android:textColor="@color/smupool_skyblue"
+        android:textColor="#74A6D3"
         android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +47,7 @@
         android:layout_width="312dp"
         android:layout_height="49dp"
         android:hint="학번"
-        android:textColorHint="@color/smupool_navy"
+        android:textColorHint="#2D415F"
         android:textSize="15sp"
         android:textStyle="bold"
         android:paddingLeft="10dp"
@@ -81,7 +81,7 @@
         android:layout_width="312dp"
         android:layout_height="49dp"
         android:hint="비밀번호"
-        android:textColorHint="@color/smupool_navy"
+        android:textColorHint="#2D415F"
         android:textSize="15sp"
         android:textStyle="bold"
         android:inputType="textPassword"
@@ -102,14 +102,13 @@
         android:textColorHint="#FF0000"
         android:textSize="15sp"
         android:textStyle="bold"
-        android:inputType="textPassword"
         android:paddingLeft="10dp"
         android:background="@drawable/rounded_edittext_error"
         android:layout_marginTop="13dp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUp_student_number_et_er"/>
+        app:layout_constraintTop_toBottomOf="@+id/signUp_student_number_et"/>
 
     <!-- 인증 오류 발생 시 (일단 gone으로 설정했어요) -->
     <TextView
@@ -123,7 +122,7 @@
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUp_password_et_er"/>
+        app:layout_constraintTop_toBottomOf="@+id/signUp_password_et"/>
 
     <TextView
         android:id="@+id/terms_use"

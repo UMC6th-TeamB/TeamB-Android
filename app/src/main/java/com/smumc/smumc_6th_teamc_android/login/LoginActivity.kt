@@ -129,6 +129,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login(){ // 로그인 진행 함수
+
         // MapActivity.kt로 이동
         val intent = Intent(this, MapActivity::class.java)
 
@@ -137,16 +138,4 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent, options.toBundle())
         Toast.makeText(this, "로그인에 성공했습니다!", Toast.LENGTH_SHORT).show()
     }
-
-//    private fun relogin(){ // 로그인 진행 함수 (1번 이상 비정상적으로 입력했을 경우)
-//
-//        // xml에서 editText 입력이 loginStudentNumberEt, loginStudentNumberEtEr 두 가지로 나누어져 있기 때문에
-//        // 1번 이상 비정상적으로 입력했을 경우 loginStudentNumberEtEr에 입력
-//        if(reloginCheck()){ // true: 로그인 진행
-//            // MapActivity.kt로 이동
-//            val intent = Intent(this, MapActivity::class.java)
-//            startActivity(intent)
-//            Toast.makeText(this, "로그인에 성공했습니다!", Toast.LENGTH_SHORT).show()
-//        }
-//    }
 }

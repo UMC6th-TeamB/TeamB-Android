@@ -22,10 +22,12 @@ import com.smumc.smumc_6th_teamc_android.databinding.ActivitySignUpBinding
 class SignUpActivity : AppCompatActivity() {
 
     lateinit var binding: ActivitySignUpBinding
+
     private var studentId: String = ""
     private var password: String = ""
     private var termsDatas = ArrayList<Terms>()
     private var personalDatas = ArrayList<Personal>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
@@ -57,8 +59,8 @@ class SignUpActivity : AppCompatActivity() {
                 binding.signUpPasswordEt.visibility = View.VISIBLE
                 binding.signUpPasswordEtEr.visibility = View.GONE
                 binding.signUpError.visibility = View.GONE
-            }
         }
+    }
 
         // 비밀번호 EditText 색상 원상 복구
         binding.signUpPasswordEtEr.setOnFocusChangeListener { _, hasFocus ->
@@ -181,7 +183,7 @@ class SignUpActivity : AppCompatActivity() {
             // 입력 오류 시 멘트 (visible)
             binding.signUpError.visibility = View.VISIBLE // "인증되지 않았습니다." text를 보이게 설정
 
-            // 회원가입이 실패했으므로 EditText를 비워줌
+            // 회원가입이 실패했으므로 EditText를 비워줌 (사용자가 입력한 값이 다 삭제됨)
             binding.signUpStudentNumberEt.text.clear()
             binding.signUpPasswordEt.text.clear()
 
@@ -191,7 +193,7 @@ class SignUpActivity : AppCompatActivity() {
         return true
     }
 
-    private fun signUp(){ // 회원가입 진행 함수
+    private fun singUp(){ // 회원가입 진행 함수 
 
         // 사용자가 입력한 정보를 DB에 저장
         val userDB = UserDatabase.getInstance(this)!!
@@ -210,26 +212,4 @@ class SignUpActivity : AppCompatActivity() {
         val options = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_in_left)
         startActivity(intent, options.toBundle())
     }
-
-//    private fun resignUp(){ // 회원가입 진행 함수 (1번 이상 비정상적으로 입력했을 경우)
-//
-//        // xml에서 editText 입력란이 signUpStudentNumberEt, signUpStudentNumberEtEr 두 가지로 나누어져 있기 때문에
-//        // 1번 이상 비정상적으로 입력했을 경우 signUpStudentNumberEtEr에 입력해야 한다.
-//        if(resignCheckUp()){ //true: 회원가입 진행
-//
-//            // 사용자가 입력한 정보를 DB에 저장
-//            val userDB = UserDatabase.getInstance(this)!!
-//            userDB.userDao().insert(regetUser())
-//
-//
-//            // 회원가입 진행 완료 후 로그인 화면으로 이동
-//            val intent = Intent(this, SignUpCheckActivity::class.java)
-//            intent.putExtra("studentId", studentId) // 학번 전달
-//
-//            // 슬라이드 효과 적용
-//            val options = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_in_left)
-//            startActivity(intent, options.toBundle())
-//        }
-//
-//    }
 }

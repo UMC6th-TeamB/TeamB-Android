@@ -25,35 +25,6 @@
             android:fontFamily="@font/sc_dream5"/>
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- 매칭된 카풀이 없습니다 화면 -->
-    <LinearLayout
-        android:id="@+id/no_match_layout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone"
-        android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_no_match"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="매칭된 카풀이 없습니다."
-            android:textSize="22sp"
-            android:fontFamily="@font/sc_dream5"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="55dp"/>
-    </LinearLayout>
-
-
-
     <!-- 채팅 화면 -->
     <LinearLayout
         android:id="@+id/chat_layout"
