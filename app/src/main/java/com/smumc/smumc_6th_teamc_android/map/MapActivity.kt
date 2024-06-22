@@ -39,6 +39,7 @@ class MapActivity : AppCompatActivity() {
     private var numPeopleDatas = ArrayList<People>()
     private var timePicker: TimePicker? = null
     private var timeInterval = 5 // timePicker에서 설정할 분 간격 (=5분 간격)
+    private var token: String? = "" // 로그인 토큰 값 전달 받는 변수 초기화
     // 지도 권한 목록
     val permissionList = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -59,9 +60,14 @@ class MapActivity : AppCompatActivity() {
         initTimePicker() //TimePicker 초기화
         requestPermissions(permissionList,0) //지도 및 위치 권한 허용 request
 
+        //LoginActivity에서 토큰 값 전달 받음
+        token = intent.getStringExtra("BearerToken")
+        Log.d("MAP 토큰 값", token.toString())
+
         // 마이페이지 버튼 클릭
         binding.mapMypageBtn.setOnClickListener {
             val intent = Intent(this, MypageActivity::class.java)
+            intent.putExtra("BearerToken", token) // 토큰 값 전달
             startActivity(intent)
         }
 

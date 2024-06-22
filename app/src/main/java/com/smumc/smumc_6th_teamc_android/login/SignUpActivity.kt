@@ -18,6 +18,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.smumc.smumc_6th_teamc_android.R
 import com.smumc.smumc_6th_teamc_android.databinding.ActivityLoginBinding
 import com.smumc.smumc_6th_teamc_android.databinding.ActivitySignUpBinding
+import com.smumc.smumc_6th_teamc_android.login.api.Client
+import com.smumc.smumc_6th_teamc_android.login.api.UserRetrofitItf
+import com.smumc.smumc_6th_teamc_android.login.api.UserRetrofitObj
+import com.smumc.smumc_6th_teamc_android.login.api.UserRetrofitResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.create
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -44,9 +52,9 @@ class SignUpActivity : AppCompatActivity() {
             studentId = binding.signUpStudentNumberEt.text.toString()
             password = binding.signUpPasswordEt.text.toString()
 
-            if(signCheckUp()){ // 학번, 비밀번호 확인하는 함수 호출 (signCheckUp)
-                signUp() // 올바르게 입력 시 회원가입 진행
-            }
+            // 학번, 비밀번호 확인하는 함수 호출
+            signCheckUp()
+
         }
         
         // 학번 EditText 색상 원상 복구
@@ -164,10 +172,15 @@ class SignUpActivity : AppCompatActivity() {
 
     }
 
-    private fun signCheckUp(): Boolean { // 학번, 비밀번호 확인하는 함수
+    private fun getUser() : Client {
+        val studentId: String = binding.signUpStudentNumberEt.text.toString()
+
+        return Client(studentId)
+    }
+
+    private fun signCheckUp() { // 학번, 비밀번호 확인하는 함수
 
         // 학번 또는 비밀번호를 입력하지 않은 경우 (빈칸)
-        // 현재로선 빈칸 입력 시 오류 발생하는 것으로 구현했습니다.
         if (binding.signUpStudentNumberEt.text.toString().isEmpty() ||binding.signUpPasswordEt.text.toString().isEmpty()){
 
             // 학번 (visible or gone)
@@ -185,51 +198,45 @@ class SignUpActivity : AppCompatActivity() {
             binding.signUpStudentNumberEt.text.clear()
             binding.signUpPasswordEt.text.clear()
 
-            return false
+            return
         }
 
-        return true
+        // 이메일 인증 API 연결
+        val authService = UserRetrofitObj.getRetrofit().create(UserRetrofitItf::class.java)
+        authService.email(getUser()).enqueue(object: Callback<UserRetrofitResponse>{
+            override fun onResponse(call: Call<UserRetrofitResponse>, response: Response<UserRetrofitResponse>){
+                Log.d("EMAIL/SUCCESS", response.toString())
+                val resp: UserRetrofitResponse = response.body()!!
+                if (resp != null){
+                    when(resp.isSuccess){
+                        true -> signUp(resp)
+                        false -> Log.d("EMAIL/SUCCESS", "이메일 전송 실패")
+                    }
+                } else {
+                    Log.d("EMAIL/SUCCESS", "Response body is null")
+                }
+            }
+
+            override fun onFailure(call: Call<UserRetrofitResponse>, t: Throwable) {
+                Log.d("EMAIL/FAILURE", t.message.toString())
+            }
+
+        })
+
     }
 
-    private fun signUp(){ // 회원가입 진행 함수
+    private fun signUp(userResponse: UserRetrofitResponse){ // 회원가입 진행 함수
 
-        // 사용자가 입력한 정보를 DB에 저장
-        val userDB = UserDatabase.getInstance(this)!!
-        userDB.userDao().insert(User(studentId, password))
-
-        // DB에 저장이 되었는지 Log를 통해서 확인
-        val user = userDB.userDao().getUsers()
-        Log.d("SIGNUPACT", user.toString())
+        Log.d("message", userResponse.message)
 
         // 회원가입 진행 완료 후 인증메일 화면으로 이동
         val intent = Intent(this, SignUpCheckActivity::class.java)
         intent.putExtra("studentId", studentId) // 학번 전달
+        intent.putExtra("password", password) // 비번 전달
         startActivity(intent)
 
         // 슬라이드 효과 적용
         val options = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_in_left)
         startActivity(intent, options.toBundle())
     }
-
-//    private fun resignUp(){ // 회원가입 진행 함수 (1번 이상 비정상적으로 입력했을 경우)
-//
-//        // xml에서 editText 입력란이 signUpStudentNumberEt, signUpStudentNumberEtEr 두 가지로 나누어져 있기 때문에
-//        // 1번 이상 비정상적으로 입력했을 경우 signUpStudentNumberEtEr에 입력해야 한다.
-//        if(resignCheckUp()){ //true: 회원가입 진행
-//
-//            // 사용자가 입력한 정보를 DB에 저장
-//            val userDB = UserDatabase.getInstance(this)!!
-//            userDB.userDao().insert(regetUser())
-//
-//
-//            // 회원가입 진행 완료 후 로그인 화면으로 이동
-//            val intent = Intent(this, SignUpCheckActivity::class.java)
-//            intent.putExtra("studentId", studentId) // 학번 전달
-//
-//            // 슬라이드 효과 적용
-//            val options = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_in_left)
-//            startActivity(intent, options.toBundle())
-//        }
-//
-//    }
 }

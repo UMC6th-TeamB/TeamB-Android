@@ -14,22 +14,32 @@ import androidx.core.app.ActivityOptionsCompat
 import com.smumc.smumc_6th_teamc_android.R
 import androidx.core.content.ContextCompat
 import com.smumc.smumc_6th_teamc_android.databinding.ActivitySignUpCheckBinding
+import com.smumc.smumc_6th_teamc_android.login.api.CertificationNum
+import com.smumc.smumc_6th_teamc_android.login.api.UserRetrofitItf
+import com.smumc.smumc_6th_teamc_android.login.api.UserRetrofitObj
+import com.smumc.smumc_6th_teamc_android.login.api.UserRetrofitResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import kotlin.concurrent.thread
-
 
 class SignUpCheckActivity: AppCompatActivity() {
 
     lateinit var binding: ActivitySignUpCheckBinding
     private var total = 180 // 3분 타이머
     private var started = true
+    private var checkNum: String = ""
+    private var studentId: String? = ""
+    private var password: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpCheckBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //SignUpActivity에서 학번을 전달 받음
-        val studentId = intent.getStringExtra("studentId")
+        //SignUpActivity에서 학번과 비번 전달 받음
+        studentId = intent.getStringExtra("studentId")
+        password = intent.getStringExtra("password")
 
         // 전달 받은 학번으로 TextView 변경
         binding.userIdTv.text = studentId + "@sangmyung.kr로"
@@ -64,9 +74,12 @@ class SignUpCheckActivity: AppCompatActivity() {
 
         // 회원가입 버튼 클릭 시
         binding.signUpStartBt.setOnClickListener {
-            if(signCheckUp()){ // 인증번호 확인하는 함수 호출 (signCheckUp)
-                singUp() // 올바르게 입력 시 회원가입 진행
-            }
+
+            // 인증 번호 저장
+            checkNum = binding.signUpCheckNumberEt.text.toString()
+
+            // 인증 번호 확인하는 함수 호출
+            signCheckUp()
         }
 
         // 인증번호 EditText 색상 원상 복구
@@ -91,10 +104,9 @@ class SignUpCheckActivity: AppCompatActivity() {
         }
     }
 
-    private fun signCheckUp(): Boolean { // 인증번호 확인하는 함수
+    private fun signCheckUp() { // 인증번호 확인하는 함수
 
         // 인증번호를 입력하지 않은 경우 (빈칸)
-        // 현재로선 빈칸 입력 시 오류 발생하는 것으로 구현했습니다.
         if (binding.signUpCheckNumberEt.text.toString().isEmpty()){
 
             // 인증번호 (visible or gone)
@@ -107,13 +119,74 @@ class SignUpCheckActivity: AppCompatActivity() {
             // 회원가입이 실패했으므로 EditText를 비워줌 (사용자가 입력한 값이 다 삭제됨)
             binding.signUpCheckNumberEt.text.clear()
 
-            return false
+            return
         }
 
-        return true
+        // 인증번호 확인 API 연결
+        val authService = UserRetrofitObj.getRetrofit().create(UserRetrofitItf::class.java)
+        authService.mailNumber(CertificationNum(checkNum)).enqueue(object: Callback<UserRetrofitResponse> {
+            override fun onResponse(call: Call<UserRetrofitResponse>, response: Response<UserRetrofitResponse>){
+                Log.d("CHECK/SUCCESS", response.toString())
+                val resp: UserRetrofitResponse = response.body()!!
+                if (resp != null){
+                    when(resp.isSuccess){
+                        true -> signUpCheck(resp)
+                        false -> Log.d("CHECK/SUCCESS", "인증 실패")
+                    }
+                } else {
+                    Log.d("CHECK/SUCCESS", "Response body is null")
+                }
+            }
+
+            override fun onFailure(call: Call<UserRetrofitResponse>, t: Throwable) {
+                Log.d("CHECK/FAILURE", t.message.toString())
+            }
+
+        })
+
     }
 
-    private fun singUp(){ // 회원가입 진행 함수
+    private fun signUpCheck(userResponse: UserRetrofitResponse){ // 인증 성공 확인하는 함수
+
+        Log.d("message", userResponse.message)
+        Log.d("result", userResponse.result)
+
+        Toast.makeText(this, "인증을 성공했습니다!", Toast.LENGTH_SHORT).show()
+
+        // 인증 성공 후 회원가입 진행
+        signUp()
+    }
+
+    private fun signUp(){
+
+        // 회원가입 진행 API 연결 // 회원가입에서 입력한 학번과 비밀번호를 전달
+        val authService = UserRetrofitObj.getRetrofit().create(UserRetrofitItf::class.java)
+        authService.join(studentId.toString(), password.toString()).enqueue(object: Callback<UserRetrofitResponse> {
+            override fun onResponse(call: Call<UserRetrofitResponse>, response: Response<UserRetrofitResponse>){
+                Log.d("SIGNUP/SUCCESS", response.toString())
+                val resp: UserRetrofitResponse = response.body()!!
+                if (resp != null){
+                    when(resp.isSuccess){
+                        true -> startActivity(resp)
+                        false -> Log.d("SIGNUP/SUCCESS", "회원가입 진행 실패")
+                    }
+                } else {
+                    Log.d("SIGNUP/SUCCESS", "Response body is null")
+                }
+            }
+
+            override fun onFailure(call: Call<UserRetrofitResponse>, t: Throwable) {
+                Log.d("SIGNUP/FAILURE", t.message.toString())
+            }
+
+        })
+    }
+
+    private fun startActivity(userResponse: UserRetrofitResponse){
+
+        Log.d("message", userResponse.message)
+        Log.d("result", userResponse.result)
+
         // 회원가입 진행 완료 후 로그인 화면으로 이동
         val intent = Intent(this, LoginActivity::class.java)
 
@@ -121,7 +194,7 @@ class SignUpCheckActivity: AppCompatActivity() {
         val options = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_in_left)
         startActivity(intent, options.toBundle())
 
-        Toast.makeText(this, "인증을 성공했습니다!", Toast.LENGTH_SHORT).show()
-        //finish()
     }
+
+
 }
