@@ -169,6 +169,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+
     private fun login(userResponse: UserRetrofitResponse){ // 로그인 진행 함수
 
         Log.d("message", userResponse.message)
@@ -186,5 +187,7 @@ class LoginActivity : AppCompatActivity() {
         val options = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out)
         startActivity(intent, options.toBundle())
         Toast.makeText(this, "로그인에 성공했습니다!", Toast.LENGTH_SHORT).show()
-    }
+
+
+}
 }

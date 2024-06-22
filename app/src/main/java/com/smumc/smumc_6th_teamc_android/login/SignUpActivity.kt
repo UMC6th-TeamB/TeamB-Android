@@ -65,8 +65,8 @@ class SignUpActivity : AppCompatActivity() {
                 binding.signUpPasswordEt.visibility = View.VISIBLE
                 binding.signUpPasswordEtEr.visibility = View.GONE
                 binding.signUpError.visibility = View.GONE
-            }
         }
+    }
 
         // 비밀번호 EditText 색상 원상 복구
         binding.signUpPasswordEtEr.setOnFocusChangeListener { _, hasFocus ->
@@ -181,6 +181,7 @@ class SignUpActivity : AppCompatActivity() {
     private fun signCheckUp() { // 학번, 비밀번호 확인하는 함수
 
         // 학번 또는 비밀번호를 입력하지 않은 경우 (빈칸)
+        // 현재로선 빈칸 입력 시 오류 발생하는 것으로 구현했습니다.
         if (binding.signUpStudentNumberEt.text.toString().isEmpty() ||binding.signUpPasswordEt.text.toString().isEmpty()){
 
             // 학번 (visible or gone)
@@ -194,7 +195,7 @@ class SignUpActivity : AppCompatActivity() {
             // 입력 오류 시 멘트 (visible)
             binding.signUpError.visibility = View.VISIBLE // "인증되지 않았습니다." text를 보이게 설정
 
-            // 회원가입이 실패했으므로 EditText를 비워줌
+            // 회원가입이 실패했으므로 EditText를 비워줌 (사용자가 입력한 값이 다 삭제됨)
             binding.signUpStudentNumberEt.text.clear()
             binding.signUpPasswordEt.text.clear()
 

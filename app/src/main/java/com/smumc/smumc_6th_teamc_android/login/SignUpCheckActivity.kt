@@ -1,3 +1,4 @@
+
 package com.smumc.smumc_6th_teamc_android.login
 
 import android.content.Context
@@ -11,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
 import com.smumc.smumc_6th_teamc_android.R
 import androidx.core.content.ContextCompat
 import com.smumc.smumc_6th_teamc_android.databinding.ActivitySignUpCheckBinding

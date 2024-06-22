@@ -23,13 +23,7 @@ class ChatActivity : AppCompatActivity() {
             onBackPressed() // 네비게이션 버튼 클릭 시 뒤로가기 동작 설정
         }
 
-        val displayMode = intent.getIntExtra("DISPLAY_MODE", 0) // Intent로부터 DISPLAY_MODE 값을 가져옴
-
-        when (displayMode) { // DISPLAY_MODE에 따라 화면을 변경
-            0 -> showNoMatchScreen() // 매칭된 카풀이 없는 화면을 표시
-            1 -> showChatScreen() // 채팅 화면을 표시
-            else -> showNoMatchScreen() // 기본적으로 매칭된 카풀이 없는 화면을 표시
-        }
+        setupChatScreen() // 채팅 화면 설정
 
         binding.sendButton.setOnClickListener {
             val messageText = binding.messageInput.text.toString() // EditText에서 텍스트를 가져옴
@@ -50,18 +44,6 @@ class ChatActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun showNoMatchScreen() {
-        binding.noMatchLayout.visibility = ConstraintLayout.VISIBLE // 매칭된 카풀이 없는 레이아웃을 표시
-        binding.chatLayout.visibility = ConstraintLayout.GONE // 채팅 레이아웃을 숨김
-    }
-
-    private fun showChatScreen() {
-        binding.noMatchLayout.visibility = ConstraintLayout.GONE // 매칭된 카풀이 없는 레이아웃을 숨김
-        binding.chatLayout.visibility = ConstraintLayout.VISIBLE // 채팅 레이아웃을 표시
-
-        setupChatScreen() // 채팅 화면 설정
     }
 
     private fun setupChatScreen() {

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.smumc.smumc_6th_teamc_android.chat.ChatActivity
+import com.smumc.smumc_6th_teamc_android.chat.ChatMenuActivity
 import com.smumc.smumc_6th_teamc_android.databinding.ActivityMainBinding
 import com.smumc.smumc_6th_teamc_android.login.LoginActivity
 import com.smumc.smumc_6th_teamc_android.login.SignUpActivity
@@ -19,7 +20,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
+        val intent1 = Intent(this, ChatMenuActivity::class.java)
+        intent1.putExtra("DISPLAY_MODE", 1)
+        startActivity(intent1)
     }
 }
