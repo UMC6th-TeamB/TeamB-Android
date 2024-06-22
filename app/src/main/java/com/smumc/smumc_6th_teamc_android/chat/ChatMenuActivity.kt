@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.smumc.smumc_6th_teamc_android.databinding.ActivityChatMenuBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ChatMenuActivity : AppCompatActivity() {
 
@@ -17,54 +20,51 @@ class ChatMenuActivity : AppCompatActivity() {
         binding = ActivityChatMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val displayMode = intent.getIntExtra("DISPLAY_MODE", 0) // Intent로부터 DISPLAY_MODE 값을 가져옴
+        val displayMode = intent.getIntExtra("DISPLAY_MODE", 0)
 
-        when (displayMode) { // DISPLAY_MODE에 따라 화면을 변경
-            0 -> showNoMatchScreen() // 매칭된 카풀이 없는 화면을 표시
-            1 -> showChatScreen() // 채팅 화면을 표시
-            else -> showNoMatchScreen() // 기본적으로 매칭된 카풀이 없는 화면을 표시
+        when (displayMode) {
+            0 -> showNoMatchScreen()
+            1 -> showChatScreen()
+            else -> showNoMatchScreen()
         }
 
         setupChatMenuScreen()
+        fetchChatRooms()
     }
 
-
     private fun showNoMatchScreen() {
-        binding.noMatchLayout.visibility = ConstraintLayout.VISIBLE // 매칭된 카풀이 없는 레이아웃을 표시
-        binding.chatRoomRecyclerView.visibility = ConstraintLayout.GONE // 채팅 레이아웃을 숨김
+        binding.noMatchLayout.visibility = ConstraintLayout.VISIBLE
+        binding.chatRoomRecyclerView.visibility = ConstraintLayout.GONE
     }
 
     private fun showChatScreen() {
-        binding.noMatchLayout.visibility = ConstraintLayout.GONE // 매칭된 카풀이 없는 레이아웃을 숨김
-        binding.chatRoomRecyclerView.visibility = ConstraintLayout.VISIBLE // 채팅 레이아웃을 표시
-
+        binding.noMatchLayout.visibility = ConstraintLayout.GONE
+        binding.chatRoomRecyclerView.visibility = ConstraintLayout.VISIBLE
     }
 
     private fun setupChatMenuScreen() {
-
-        val members = listOf(
-            Member("유지민", "@drawable/ic_user_avatar", "19학번", "컴퓨터과학과"),
-            Member("홍길동", "@drawable/ic_user_avatar", "19학번", "컴퓨터과학과"),
-            Member("박심청", "@drawable/ic_user_avatar", "19학번", "컴퓨터과학과"),
-            Member("이소희", "@drawable/ic_user_avatar", "19학번", "컴퓨터과학과"),
-        )
-
-        val chatRooms = listOf(
-            ChatRoom("24.05.27 시청역", "3", "안녕하세요 스뮤플...", "오후 4:13", members),
-            ChatRoom("24.05.24 시청역", "2", "안녕하세요 스뮤플...", "오후 2:23", members),
-            ChatRoom("24.05.20 시청역", "2", "안녕하세요 스뮤플...", "오후 12:20", members)
-        )
-
-        chatRoomAdapter = ChatRoomAdapter(chatRooms) { chatRoom ->
+        chatRoomAdapter = ChatRoomAdapter(emptyList()) { chatRoom ->
             val intent = Intent(this, ChatActivity::class.java)
+            intent.putExtra("CHAT_ROOM_ID", chatRoom.id)
             startActivity(intent)
         }
-
         binding.chatRoomRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.chatRoomRecyclerView.adapter = chatRoomAdapter
     }
 
-//    private fun ChatRoom(date: String, region: String, message: String, time: String, members: List<Member>): ChatRoom {
-//
-//    }
+    private fun fetchChatRooms() {
+        RetrofitClient.instance.getChatRooms().enqueue(object : Callback<List<ChatRoom>> {
+            override fun onResponse(call: Call<List<ChatRoom>>, response: Response<List<ChatRoom>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        chatRoomAdapter.updateChatRooms(it)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<ChatRoom>>, t: Throwable) {
+                // 에러 처리
+            }
+        })
+    }
 }
