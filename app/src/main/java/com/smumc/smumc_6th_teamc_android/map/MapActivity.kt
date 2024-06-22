@@ -38,14 +38,16 @@ import android.os.Handler;
 import com.smumc.smumc_6th_teamc_android.databinding.ActivityCarpoolCurrentMatchBinding
 
 class MapActivity : AppCompatActivity() {
+
     lateinit var binding: ActivityMapBinding
     private var stationDatas = ArrayList<Station>()
     private var numPeopleDatas = ArrayList<People>()
-    private var timeInterval = 5 // timePicker에서 설정할 분 간격 (=5분 간격)
     private var timePicker: TimePicker? = null
+    private var timeInterval = 5 // timePicker에서 설정할 분 간격 (=5분 간격)
     private lateinit var handler: Handler
     private var dotCount = 0
 
+    private var token: String? = "" // 로그인 토큰 값 전달 받는 변수 초기화
     // 지도 권한 목록
     val permissionList = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -63,7 +65,24 @@ class MapActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initClickListener() //ClickListener 모음
-        requestPermissions(permissionList, 0) //지도 및 위치 권한 허용 request
+        initTimePicker() //TimePicker 초기화
+        requestPermissions(permissionList,0) //지도 및 위치 권한 허용 request
+
+        //LoginActivity에서 토큰 값 전달 받음
+        token = intent.getStringExtra("BearerToken")
+        Log.d("MAP 토큰 값", token.toString())
+
+        // 마이페이지 버튼 클릭
+        binding.mapMypageBtn.setOnClickListener {
+            val intent = Intent(this, MypageActivity::class.java)
+            intent.putExtra("BearerToken", token) // 토큰 값 전달
+            startActivity(intent)
+        }
+
+        // 카풀하기 버튼 클릭 리스너 설정
+        binding.mapCarpoolBtn.setOnClickListener {
+            setLocationStatus(true)
+        }
 
         // Google MapFragment 객체
         val supportMapFragment =
@@ -105,7 +124,7 @@ class MapActivity : AppCompatActivity() {
         }
 
         // 장소 데이터 리스트 생성 더미 데이터
-        stationDatas.apply {
+        stationDatas.apply{
             add(Station("남영역 1번출구"))
             add(Station("홍제역 1번출구"))
             add(Station("서울역 버스환승센터 택시정류장"))
@@ -480,3 +499,4 @@ class MapActivity : AppCompatActivity() {
         }
     }
 }
+
