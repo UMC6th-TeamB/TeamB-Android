@@ -29,6 +29,18 @@
             app:layout_constraintStart_toStartOf="@id/map_carpool_matching_lo"
             app:layout_constraintTop_toTopOf="@id/map_carpool_matching_lo" />
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_marker"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toEndOf="@id/map_carpool_matching_title_tv"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_rawRes="@raw/marker"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
+
         <TextView
             android:id="@+id/map_carpool_matching_cancel_tv"
             android:layout_width="wrap_content"
