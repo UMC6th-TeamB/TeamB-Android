@@ -34,7 +34,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.smumc.smumc_6th_teamc_android.databinding.*
 import java.text.SimpleDateFormat
 import java.util.*
-import android.os.Handler;
+import android.os.Handler
+import java.util.Random
 import com.smumc.smumc_6th_teamc_android.databinding.ActivityCarpoolCurrentMatchBinding
 import com.smumc.smumc_6th_teamc_android.mypage.MypageActivity
 
@@ -46,7 +47,9 @@ class MapActivity : AppCompatActivity() {
     private var timePicker: TimePicker? = null
     private var timeInterval = 5 // timePicker에서 설정할 분 간격 (=5분 간격)
     private lateinit var handler: Handler
+    val random = Random(System.currentTimeMillis()) // 난수 설정
     private var dotCount = 0
+    private var numCount = 0
 
     private var token: String? = "" // 로그인 토큰 값 전달 받는 변수 초기화
     // 지도 권한 목록
@@ -71,13 +74,6 @@ class MapActivity : AppCompatActivity() {
         //LoginActivity에서 토큰 값 전달 받음
         token = intent.getStringExtra("BearerToken")
         Log.d("MAP 토큰 값", token.toString())
-
-        // 마이페이지 버튼 클릭
-        binding.mapMypageBtn.setOnClickListener {
-            val intent = Intent(this, MypageActivity::class.java)
-            intent.putExtra("BearerToken", token) // 토큰 값 전달
-            startActivity(intent)
-        }
 
         // Google MapFragment 객체
         val supportMapFragment =
@@ -139,6 +135,13 @@ class MapActivity : AppCompatActivity() {
     }
 
     private fun initClickListener() {
+        // 마이페이지 버튼 클릭
+        binding.mapMypageBtn.setOnClickListener {
+            val intent = Intent(this, MypageActivity::class.java)
+            intent.putExtra("BearerToken", token) // 토큰 값 전달
+            startActivity(intent)
+        }
+
         // 카풀하기 버튼 클릭 리스너 설정
         binding.mapCarpoolBtn.setOnClickListener {
             showSelectStationDialog()
@@ -284,7 +287,12 @@ class MapActivity : AppCompatActivity() {
         dialog.setContentView(binding.root)
         dialog.setCancelable(false) // 바깥 영역 터치해도 닫힘 X
 
+        numCount = 0
+        dotCount = 0
+        binding.mapCarpoolMatchingNumTv.text = "$numCount"
+
         startLoadingDots(binding) // 온점 수 변화 호출
+        startNumPeople(binding, displayText) // 매칭 사람 수 변화
 
         // 선택된 인원수를 받아와서 텍스트뷰에 설정
         binding.mapCarpoolMatchingSelectNumTv.text = displayText
@@ -312,12 +320,28 @@ class MapActivity : AppCompatActivity() {
             }
         }, 500)
     }
-
     private fun updateDots(binding: ActivityCarpoolMatchingBinding) { // 온점 수 업데이트하는 함수
         val baseText = "매칭 중입니다"
         dotCount = (dotCount + 1) % 4 // 0, 1, 2, 3을 반복
         val dots = ".".repeat(dotCount)
         binding.mapCarpoolMatchingTitleTv.text = "$baseText$dots"
+    }
+
+    private fun startNumPeople(binding: ActivityCarpoolMatchingBinding, selectNum: String) { // 매칭 사람 수 로딩 함수
+        handler = Handler() //Handler 초기화
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                if (numCount < selectNum.toInt()){
+                    updateNumPeople(binding, selectNum.toInt()) // 0.5초마다 온점 업데이트
+                    val delayTime = random.nextInt(60000 - 1000 + 1) + 1000 // 1초부터 60초 사이의 랜덤 시간
+                    handler.postDelayed(this, delayTime.toLong())
+                }
+            }
+        }, random.nextInt(60000 - 1000 + 1) + 1000.toLong())
+    }
+    private fun updateNumPeople(binding: ActivityCarpoolMatchingBinding, selectNum: Int) { // 매칭 사람 수 업데이트하는 함수
+        numCount++
+        binding.mapCarpoolMatchingNumTv.text = "$numCount"
     }
 
     private fun showCurrentMatchDialog(parentDialog: Dialog) { // 현재 인원수 매칭 진행 팝업
