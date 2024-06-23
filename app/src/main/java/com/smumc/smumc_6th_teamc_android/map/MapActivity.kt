@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.os.Handler;
 import com.smumc.smumc_6th_teamc_android.databinding.ActivityCarpoolCurrentMatchBinding
+import com.smumc.smumc_6th_teamc_android.mypage.MypageActivity
 
 class MapActivity : AppCompatActivity() {
 
@@ -65,7 +66,6 @@ class MapActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initClickListener() //ClickListener 모음
-        initTimePicker() //TimePicker 초기화
         requestPermissions(permissionList,0) //지도 및 위치 권한 허용 request
 
         //LoginActivity에서 토큰 값 전달 받음
@@ -77,11 +77,6 @@ class MapActivity : AppCompatActivity() {
             val intent = Intent(this, MypageActivity::class.java)
             intent.putExtra("BearerToken", token) // 토큰 값 전달
             startActivity(intent)
-        }
-
-        // 카풀하기 버튼 클릭 리스너 설정
-        binding.mapCarpoolBtn.setOnClickListener {
-            setLocationStatus(true)
         }
 
         // Google MapFragment 객체

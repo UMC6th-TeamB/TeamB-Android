@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         // 로그인 버튼 클릭 시
-        binding.loginStartTv.setOnClickListener{
+        binding.loginStartTv.setOnClickListener {
 
             // 학번, 비밀번호 저장
             studentId = binding.loginStudentNumberEt.text.toString()
@@ -81,7 +81,7 @@ class LoginActivity : AppCompatActivity() {
 
         // 배경화면 클릭 시 키보드 숨기기
         binding.loginActivity.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN){
+            if (event.action == MotionEvent.ACTION_DOWN) {
                 currentFocus?.let { view ->
                     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
@@ -95,7 +95,7 @@ class LoginActivity : AppCompatActivity() {
     private fun loginCheck() { // 학번, 비밀번호 확인 함수
 
         // 1. 학번 또는 비밀번호를 입력하지 않은 경우 (빈칸)
-        if (binding.loginStudentNumberEt.text.toString().isEmpty() ||binding.loginPasswordEt.text.toString().isEmpty()){
+        if (binding.loginStudentNumberEt.text.toString().isEmpty() || binding.loginPasswordEt.text.toString().isEmpty()){
 
             // 학번 (visible or gone)
             binding.loginStudentNumberEt.visibility = View.GONE // 기존 학번 editText는 보이지 않게 설정
@@ -117,13 +117,14 @@ class LoginActivity : AppCompatActivity() {
 
         // 로그인 API 연결
         val authService = UserRetrofitObj.getRetrofit().create(UserRetrofitItf::class.java)
-        authService.login(studentId, password).enqueue(object:
+        authService.login(studentId, password).enqueue(object :
             Callback<UserRetrofitResponse> {
-            override fun onResponse(call: Call<UserRetrofitResponse>, response: Response<UserRetrofitResponse>){
+            override fun onResponse(call: Call<UserRetrofitResponse>, response: Response<UserRetrofitResponse>) {
                 Log.d("LOGIN/SUCCESS", response.toString())
                 val resp: UserRetrofitResponse = response.body()!!
-                if (resp != null){
-                    when(resp.isSuccess){
+                Log.d("resp", resp.toString())
+                if (resp != null) {
+                    when (resp.isSuccess) {
                         true -> login(resp)
                         false -> Log.d("LOGIN/SUCCESS", "회원가입 진행 실패")
                     }
@@ -170,7 +171,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    private fun login(userResponse: UserRetrofitResponse){ // 로그인 진행 함수
+    private fun login(userResponse: UserRetrofitResponse) { // 로그인 진행 함수
 
         Log.d("message", userResponse.message)
         Log.d("result", userResponse.result)
@@ -187,7 +188,5 @@ class LoginActivity : AppCompatActivity() {
         val options = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out)
         startActivity(intent, options.toBundle())
         Toast.makeText(this, "로그인에 성공했습니다!", Toast.LENGTH_SHORT).show()
-
-
-}
+    }
 }
