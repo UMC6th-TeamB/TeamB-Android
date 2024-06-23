@@ -37,12 +37,10 @@ class ChatMenuActivity : AppCompatActivity(), ChatRoomView {
             onBackPressed()
         }
 
-        val displayMode = intent.getIntExtra("DISPLAY_MODE", 0)
-
-        when (displayMode) {
-            0 -> showNoMatchScreen()
-            1 -> showChatScreen()
-            else -> showNoMatchScreen()
+        if(BEARER_TOKEN != null){
+            showChatScreen()
+        } else {
+            showNoMatchScreen()
         }
 
         getChatRooms()

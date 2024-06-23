@@ -102,13 +102,7 @@ class MypageActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<UserRetrofitResponse>, t: Throwable) {
                     Log.d("CHANGE/FAILURE", t.message.toString())
                 }
-
             })
-
-
         }
-
-
-
     }
 }

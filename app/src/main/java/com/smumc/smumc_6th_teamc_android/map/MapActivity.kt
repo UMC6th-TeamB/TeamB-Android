@@ -35,6 +35,7 @@ import com.smumc.smumc_6th_teamc_android.databinding.*
 import java.text.SimpleDateFormat
 import java.util.*
 import android.os.Handler
+import com.smumc.smumc_6th_teamc_android.chat.ChatMenuActivity
 import java.util.Random
 import com.smumc.smumc_6th_teamc_android.databinding.ActivityCarpoolCurrentMatchBinding
 import com.smumc.smumc_6th_teamc_android.mypage.MypageActivity
@@ -166,6 +167,13 @@ class MapActivity : AppCompatActivity() {
                 // 현재 위치 측정하여 지도 갱신하는 함수
                 getMyLocation()
             }
+        }
+
+        //채팅 버튼 클릭
+        binding.mapChattingBtn.setOnClickListener {
+            val intent = Intent(this, ChatMenuActivity::class.java)
+            intent.putExtra("BearerToken", token) // 토큰 값 전달
+            startActivity(intent)
         }
     }
 

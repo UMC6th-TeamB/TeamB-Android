@@ -218,7 +218,6 @@ class SignUpActivity : AppCompatActivity() {
                 }
             }
 
-    private fun signUp(){ // 회원가입 진행 함수
             override fun onFailure(call: Call<UserRetrofitResponse>, t: Throwable) {
                 Log.d("EMAIL/FAILURE", t.message.toString())
             }
