@@ -1,67 +1,262 @@
 package com.smumc.smumc_6th_teamc_android.chat
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.smumc.smumc_6th_teamc_android.databinding.ActivityChatBinding
+import io.reactivex.CompletableTransformer
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import ua.naiksoftware.stomp.Stomp
+import ua.naiksoftware.stomp.StompClient
+import ua.naiksoftware.stomp.dto.LifecycleEvent
+import ua.naiksoftware.stomp.dto.StompHeader
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class ChatActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityChatBinding // View Binding을 사용하여 레이아웃의 뷰 요소에 접근하기 위한 변수
-    private lateinit var chatRVAdapter: ChatRVAdapter // RecyclerView 어댑터를 위한 변수
+    companion object {
+        private const val TAG = "ChatTest"
+    }
 
+    private lateinit var binding: ActivityChatBinding
+    private lateinit var chatRVAdapter: ChatRVAdapter
+    private lateinit var mStompClient: StompClient
+    private val mTimeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+    private val mGson: Gson = GsonBuilder().create()
+    private val compositeDisposable = CompositeDisposable()
+    private lateinit var chatRoomId: String
+    private var BEARER_TOKEN: String? = ""
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState) // 슈퍼클래스의 onCreate 메서드 호출
-        binding = ActivityChatBinding.inflate(layoutInflater) // View Binding 초기화
-        setContentView(binding.root) // 뷰 설정
+        super.onCreate(savedInstanceState)
+        binding = ActivityChatBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        chatRVAdapter = ChatRVAdapter(mutableListOf())
+        chatRVAdapter.setHasStableIds(true)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = chatRVAdapter
 
-        setSupportActionBar(binding.toolbar) // 툴바 설정
-        supportActionBar?.setDisplayShowTitleEnabled(false) // 툴바 타이틀 비활성화
+        mStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "ws://10.0.2.2:8080/ws")
 
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        chatRoomId = intent.getStringExtra("CHAT_ROOM_ID") ?: ""
         binding.toolbar.setNavigationOnClickListener {
-            onBackPressed() // 네비게이션 버튼 클릭 시 뒤로가기 동작 설정
+            onBackPressed()
         }
 
-        setupChatScreen() // 채팅 화면 설정
+        setupChatScreen()
+        connectStomp()
 
         binding.sendButton.setOnClickListener {
-            val messageText = binding.messageInput.text.toString() // EditText에서 텍스트를 가져옴
-            if (messageText.isNotBlank()) { // 메시지가 공백이 아닌지 확인
-                val message = Message(messageText, "나", true) // 메시지 객체 생성
-                chatRVAdapter.addMessage(message) // 메시지를 어댑터에 추가
-                binding.messageInput.text.clear() // EditText를 비움
-                binding.recyclerView.scrollToPosition(chatRVAdapter.itemCount - 1) // RecyclerView를 스크롤하여 마지막 메시지를 표시
+            val messageText = binding.messageInput.text.toString()
+            if (messageText.isNotBlank()) {
+                val message = Message(messageText, "나", true, mTimeFormat.format(Date()))
+                chatRVAdapter.addMessage(message)
+                binding.messageInput.text.clear()
+                binding.recyclerView.scrollToPosition(chatRVAdapter.itemCount - 1)
+//                sendRestEcho(message)
+                sendEchoViaStomp(messageText, "나")
             }
         }
 
-        //키보드 입력시
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
-            val heightDiff = binding.root.rootView.height - binding.root.height // 화면 높이 변화 계산 : 키보드가 나타나기 전의 전체 화면 높이 - 키보드가 나타난 후의 현재 루트 뷰의 높이
-            if (heightDiff > dpToPx(200)) { // 임계값을 적절하게 조정 (화면의 높이 변화(heightDiff)가 200dp보다 클 경우, 키보드가 나타났다고 간주)
+            val heightDiff = binding.root.rootView.height - binding.root.height
+            if (heightDiff > dpToPx(200)) {
                 binding.recyclerView.post {
-                    binding.recyclerView.scrollToPosition((binding.recyclerView.adapter?.itemCount ?: 0) - 1) // RecyclerView를 스크롤하여 마지막 메시지를 표시
+                    binding.recyclerView.scrollToPosition((binding.recyclerView.adapter?.itemCount ?: 0) - 1)
                 }
             }
         }
+
+        val dispPing = mStompClient.topic("/sub/chat.message/$chatRoomId").toObservable()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ message ->
+                Log.d(TAG, "Received ${message.payload}")
+                val echoModel = mGson.fromJson(message.payload, EchoModel::class.java)
+                if (echoModel.content != null) {
+                    addItem(echoModel)
+                }
+            }, { throwable ->
+                Log.e(TAG, "Error on subscribe topic", throwable)
+            })
+
+        compositeDisposable.add(dispPing)
+    }
+
+    fun disconnectStomp() {
+        mStompClient.disconnect()
+        compositeDisposable.clear()
+    }
+
+    fun connectStomp() {
+        val headers = listOf(
+            StompHeader("Bearer", BEARER_TOKEN)
+        )
+        resetSubscriptions()
+        mStompClient.connect(headers)
+
+        val dispLifecycle = mStompClient.lifecycle()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { event ->
+                when (event.type) {
+                    LifecycleEvent.Type.OPENED -> {
+//                        toast("Stomp connection opened")
+                        subscribeToTopic()
+                    }
+                    LifecycleEvent.Type.ERROR -> {
+                        Log.e(TAG, "Stomp connection error", event.exception)
+//                        toast("Stomp connection error")
+                    }
+                    LifecycleEvent.Type.CLOSED -> {
+//                        toast("Stomp connection closed")
+                        resetSubscriptions()
+                    }
+                    LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT ->
+                        Log.e(TAG, "Stomp failed server heartbeat")
+//                        toast("Stomp failed server heartbeat")
+                }
+            }
+
+        compositeDisposable.add(dispLifecycle)
+    }
+
+    private fun sendEchoViaStomp(message: String, sender: String) {
+        val gson = Gson()
+        val data = mapOf("sender" to sender, "content" to message)
+        val jsonData = gson.toJson(data)
+        compositeDisposable.add(mStompClient.send("/sub/chat.message/$chatRoomId", jsonData)
+            .compose(applySchedulers())
+            .subscribe({
+                Log.d(TAG, "STOMP echo send successfully")
+            }, { throwable ->
+                Log.e(TAG, "Error send STOMP echo", throwable)
+//                toast(throwable.message ?: "Unknown error")
+            }))
+    }
+
+//    private fun sendRestEcho(message: Message) {
+//        val chatService = RestClient.getRetrofit().create(ChatRetrofitInterfaces::class.java)
+//        chatService.sendRestEcho("$chatRoomId", ChatMessage("test", message.text)).enqueue(object :
+//            Callback<ChatRetrofitResponse> {
+//            override fun onResponse(call: Call<ChatRetrofitResponse>, response: Response<ChatRetrofitResponse>) {
+//                if (response.isSuccessful) {
+//                    Log.d("CHAT/SUCCESS", response.toString())
+//                    val resp: ChatRetrofitResponse? = response.body()
+//                    if (resp != null) {
+//                        if (resp.isSuccess) {
+//                            Log.d("CHAT/SUCCESS", "채팅 전송 성공")
+//                        } else {
+//                            Log.d("CHAT/SUCCESS", "채팅 전송 실패")
+//                        }
+//                    } else {
+//                        Log.d("CHAT/SUCCESS", "Response body is null")
+//                    }
+//                } else {
+//                    val errorBody = response.errorBody()?.string()
+//                    if (errorBody != null) {
+//                        Log.e("CHAT/SUCCESS", "Error sending rest echo: $errorBody")
+//                        toast("Error sending rest echo: $errorBody")
+//                    } else {
+//                        Log.e("CHAT/SUCCESS", "Error sending rest echo: unknown error")
+//                        toast("Error sending rest echo: unknown error")
+//                    }
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<ChatRetrofitResponse>, t: Throwable) {
+//                Log.e("CHAT/FAILURE", t.message.toString())
+//                toast(t.message ?: "Unknown error")
+//            }
+//        })
+//    }
+
+    private fun subscribeToTopic() {
+        val dispPing = mStompClient.topic("/sub/chat.message")
+            .take(1)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ message ->
+                Log.d(TAG, "Received ${message.payload}")
+                val echoModel = mGson.fromJson(message.payload, EchoModel::class.java)
+                if (echoModel.content != null) {
+                    addItem(echoModel)
+                }
+            }, { throwable ->
+                Log.e(TAG, "Error on subscribe topic", throwable)
+            })
+
+        compositeDisposable.add(dispPing)
+    }
+
+    private fun addItem(echoModel: EchoModel) {
+        val currentUser = "나"
+        if (echoModel.sender == currentUser) {
+            return
+        }
+        val message = Message(echoModel.content ?: "", echoModel.sender ?: "Unknown", false, mTimeFormat.format(Date()))
+        chatRVAdapter.addMessage(message)
+        chatRVAdapter.notifyDataSetChanged()
+        binding.recyclerView.scrollToPosition(chatRVAdapter.itemCount - 1)
     }
 
     private fun setupChatScreen() {
-        val messages = mutableListOf( // 초기 메시지 리스트를 생성
-            Message("안녕하세요\n스뮤플 사용자1 입니다.", "", false),
-            Message("안녕하세요\n스뮤플 사용자2 입니다.", "", false),
-            Message("안녕하세요\n스뮤플 사용자3 입니다.", "", false),
-            Message("안녕하세요\n스뮤플 사용자4 입니다.", "", false),
-            Message("안녕하세요\n스뮤플 사용자5 입니다.", "", true)
-        )
+        chatRVAdapter = ChatRVAdapter(mutableListOf())
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = chatRVAdapter
+    }
 
-        chatRVAdapter = ChatRVAdapter(messages) // RecyclerView 어댑터를 초기화
-        binding.recyclerView.layoutManager = LinearLayoutManager(this) // RecyclerView 레이아웃 매니저 설정
-        binding.recyclerView.adapter = chatRVAdapter // RecyclerView 어댑터 설정
+    private fun toast(text: String) {
+        Log.i(TAG, text)
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun applySchedulers(): CompletableTransformer {
+        return CompletableTransformer { upstream ->
+            upstream.unsubscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+        }
+    }
+
+    private fun resetSubscriptions() {
+        compositeDisposable.clear()
+    }
+
+    override fun onDestroy() {
+        disconnectStomp()
+        compositeDisposable.dispose()
+        super.onDestroy()
+    }
+
+    private fun showError(message: String?) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     private fun dpToPx(dp: Int): Int {
-        val density = resources.displayMetrics.density // 디스플레이 밀도 가져오기
-        return (dp * density).toInt() // dp 값을 px 값으로 변환
+        val density = resources.displayMetrics.density
+        return (dp * density).toInt()
     }
 }
+
+data class EchoModel(
+    var sender: String? = null,
+    var content: String? = null
+)
