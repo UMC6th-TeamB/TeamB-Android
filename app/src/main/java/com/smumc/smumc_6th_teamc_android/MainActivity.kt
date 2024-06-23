@@ -20,8 +20,5 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        val intent1 = Intent(this, ChatMenuActivity::class.java)
-        intent1.putExtra("DISPLAY_MODE", 1)
-        startActivity(intent1)
     }
 }

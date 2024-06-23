@@ -13,6 +13,17 @@
         android:layout_marginRight="25dp"
         tools:ignore="MissingConstraints">
 
+        <!-- 시간 표시를 위한 TextView 추가 -->
+        <TextView
+            android:id="@+id/message_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:textColor="#2D415F"
+            android:textSize="12sp"
+            android:layout_gravity="bottom|center_vertical"
+            tools:text="10:00 AM"/>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

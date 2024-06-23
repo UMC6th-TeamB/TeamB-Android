@@ -193,7 +193,7 @@ class SignUpActivity : AppCompatActivity() {
         return true
     }
 
-    private fun singUp(){ // 회원가입 진행 함수 
+    private fun signUp(){ // 회원가입 진행 함수
 
         // 사용자가 입력한 정보를 DB에 저장
         val userDB = UserDatabase.getInstance(this)!!

@@ -5,11 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.smumc.smumc_6th_teamc_android.databinding.ChatRoomItemBinding
 
-// 데이터 클래스 정의: 채팅방 정보를 나타냄
-data class ChatRoomRVAdapter(val date: String, val region: String, val message: String, val time: String, val members: List<Member>)
-
 // RecyclerView 어댑터 클래스 정의
-class ChatRoomAdapter(private var chatRooms: List<ChatRoom>, private val onClick: (ChatRoom) -> Unit)
+class ChatRoomRVAdapter(private val chatRooms: ArrayList<ChatRoom>, private val onClick: (ChatRoom) -> Unit)
     : RecyclerView.Adapter<ChatRoomViewHolder>() {
 
     // ViewHolder를 생성할 때 호출되는 메서드
@@ -27,10 +24,10 @@ class ChatRoomAdapter(private var chatRooms: List<ChatRoom>, private val onClick
     override fun getItemCount(): Int = chatRooms.size // 채팅방 목록의 크기 반환
 
     // 채팅방 목록을 업데이트하는 메서드
-    fun updateChatRooms(newChatRooms: List<ChatRoom>) {
-        chatRooms = newChatRooms // 새로운 채팅방 목록으로 업데이트
-        notifyDataSetChanged() // 데이터 변경을 어댑터에 알림
-    }
+//    fun updateChatRooms(newChatRooms: ArrayList<ChatRoom>) {
+//        chatRooms = newChatRooms // 새로운 채팅방 목록으로 업데이트
+//        notifyDataSetChanged() // 데이터 변경을 어댑터에 알림
+//    }
 }
 
 // ViewHolder 클래스 정의: 채팅방 아이템 뷰를 관리
@@ -38,11 +35,10 @@ class ChatRoomViewHolder(private val binding: ChatRoomItemBinding) : RecyclerVie
 
     // 채팅방 데이터를 View에 바인딩하는 메서드
     fun bind(chatRoom: ChatRoom, onClick: (ChatRoom) -> Unit) {
-        binding.chatRoomDate.text = chatRoom.date // 채팅방 날짜 설정
+        binding.chatRoomDate.text = chatRoom.dateTime // 채팅방 날짜 설정
         binding.chatRoomRegion.text = chatRoom.region // 채팅방 지역 설정
-        binding.chatRoomMember.text = chatRoom.members.size.toString() // 채팅방 멤버 수 설정
-        binding.chatRoomMessage.text = chatRoom.message // 채팅방 메시지 설정
-        binding.chatRoomTime.text = chatRoom.time // 채팅방 시간 설정
+        binding.chatRoomMember.text = chatRoom.memberCount.toString() // 채팅방 멤버 수 설정
+        binding.chatRoomMessage.text = chatRoom.lastMessage // 채팅방 메시지 설정
         binding.root.setOnClickListener { onClick(chatRoom) } // 아이템 클릭 리스너 설정
     }
 }

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.smumc.smumc_6th_teamc_android.R
 
 // 메시지 데이터를 나타내는 데이터 클래스
-data class Message(val text: String, val userInfo: String, val isSentByUser: Boolean)
+data class Message(val text: String, val userInfo: String, val isSentByUser: Boolean, val time: String)
 
 // RecyclerView 어댑터 클래스 정의
 class ChatRVAdapter(private val messages: MutableList<Message>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -24,11 +24,13 @@ class ChatRVAdapter(private val messages: MutableList<Message>) : RecyclerView.A
     inner class OtherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val userAvatar: ImageView = itemView.findViewById(R.id.user_avatar) // 사용자 아바타 이미지뷰
         val messageText: TextView = itemView.findViewById(R.id.message_text) // 메시지 텍스트뷰
+        val messageTime: TextView = itemView.findViewById(R.id.message_time) // 메시지 시간 텍스트뷰
     }
 
     // 자신의 메시지를 표시하는 ViewHolder 클래스
     inner class MineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val messageText: TextView = itemView.findViewById(R.id.message_text) // 메시지 텍스트뷰
+        val messageTime: TextView = itemView.findViewById(R.id.message_time) // 메시지 시간 텍스트뷰
     }
 
     // 메시지의 뷰 타입을 반환하는 메서드
@@ -52,8 +54,10 @@ class ChatRVAdapter(private val messages: MutableList<Message>) : RecyclerView.A
         val message = messages[position] // 현재 위치의 메시지 가져오기
         if (holder is MineViewHolder) { // 자신의 메시지 ViewHolder인 경우
             holder.messageText.text = message.text // 메시지 텍스트 설정
+            holder.messageTime.text = message.time // 메시지 시간 설정
         } else if (holder is OtherViewHolder) { // 다른 사용자의 메시지 ViewHolder인 경우
             holder.messageText.text = message.text // 메시지 텍스트 설정
+            holder.messageTime.text = message.time // 메시지 시간 설정
         }
     }
 

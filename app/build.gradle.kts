@@ -47,13 +47,12 @@ android {
         enable = true
     }
 
-    composeOptions{
+    composeOptions {
         kotlinCompilerExtensionVersion = "1.5.8"
     }
 }
 
 dependencies {
-
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.12.0")
@@ -65,33 +64,41 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    //Google Map
-    implementation("com.google.android.gms:play-services-maps:18.2.0") //Android용 Google Maps SDK
-    implementation("com.google.android.gms:play-services-location:21.2.0") //Android용 위치 서비스
+    // Google Map
+    implementation("com.google.android.gms:play-services-maps:18.2.0") // Android용 Google Maps SDK
+    implementation("com.google.android.gms:play-services-location:21.2.0") // Android용 위치 서비스
 
-    //material (아이콘 라이브러리)
+    // Material (아이콘 라이브러리)
     implementation("androidx.compose.material:material:1.6.7")
     implementation("androidx.compose.material3:material3:1.2.1")
 
-    //accompanist-permissions (권한 요청 라이브러리)
+    // Accompanist-permissions (권한 요청 라이브러리)
     implementation("com.google.accompanist:accompanist-permissions:0.34.0")
 
     // Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2")
 
     // OkHttp
-    implementation ("com.squareup.okhttp3:okhttp:4.9.1")
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
-    
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+
     // WebSocket
-    implementation ("org.java-websocket:Java-WebSocket:1.5.2")
+    implementation("org.java-websocket:Java-WebSocket:1.5.2")
 
     // RoomDB
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.room:room-runtime:2.6.1")
-//    kapt("androidx.room:room-compiler:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 
-    // lottie 애니메이션
-    implementation ("com.airbnb.android:lottie:6.3.0")
+    // Lottie 애니메이션
+    implementation("com.airbnb.android:lottie:6.3.0")
+
+    // RxJava
+    implementation("io.reactivex.rxjava2:rxjava:2.2.21")
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+
+    // Stomp
+    implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
 }
