@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import com.smumc.smumc_6th_teamc_android.R
-import androidx.core.content.ContextCompat
 import com.smumc.smumc_6th_teamc_android.databinding.ActivitySignUpCheckBinding
 import com.smumc.smumc_6th_teamc_android.login.api.CertificationNum
 import com.smumc.smumc_6th_teamc_android.login.api.UserRetrofitItf
@@ -106,21 +105,23 @@ class SignUpCheckActivity: AppCompatActivity() {
         }
     }
 
+    private fun error(){
+        // 인증번호 (visible or gone)
+        binding.signUpCheckNumberEt.visibility = View.GONE
+        binding.signUpCheckNumberEtEr.visibility = View.VISIBLE
+
+        // 입력 오류 시 멘트 (visible)
+        binding.checkError.visibility = View.VISIBLE
+
+        // 회원가입이 실패했으므로 EditText를 비워줌 (사용자가 입력한 값이 다 삭제됨)
+        binding.signUpCheckNumberEt.text.clear()
+    }
+
     private fun signCheckUp() { // 인증번호 확인하는 함수
 
         // 인증번호를 입력하지 않은 경우 (빈칸)
         if (binding.signUpCheckNumberEt.text.toString().isEmpty()){
-
-            // 인증번호 (visible or gone)
-            binding.signUpCheckNumberEt.visibility = View.GONE
-            binding.signUpCheckNumberEtEr.visibility = View.VISIBLE
-
-            // 입력 오류 시 멘트 (visible)
-            binding.checkError.visibility = View.VISIBLE
-
-            // 회원가입이 실패했으므로 EditText를 비워줌 (사용자가 입력한 값이 다 삭제됨)
-            binding.signUpCheckNumberEt.text.clear()
-
+            error()
             return
         }
 
@@ -133,7 +134,7 @@ class SignUpCheckActivity: AppCompatActivity() {
                 if (resp != null){
                     when(resp.isSuccess){
                         true -> signUpCheck(resp)
-                        false -> Log.d("CHECK/SUCCESS", "인증 실패")
+                        false -> error()
                     }
                 } else {
                     Log.d("CHECK/SUCCESS", "Response body is null")
