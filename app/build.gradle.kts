@@ -92,13 +92,19 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
 
-    // Lottie 애니메이션
-    implementation("com.airbnb.android:lottie:6.3.0")
-
     // RxJava
     implementation("io.reactivex.rxjava2:rxjava:2.2.21")
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 
     // Stomp
     implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
+    
+    // lottie 애니메이션
+    implementation ("com.airbnb.android:lottie:6.3.0")
+    kapt("androidx.room:room-compiler:2.6.1")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
 }
