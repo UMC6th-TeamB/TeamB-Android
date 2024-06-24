@@ -23,6 +23,7 @@ class ChatRVAdapter(private val messages: MutableList<Message>) : RecyclerView.A
     // 다른 사용자의 메시지를 표시하는 ViewHolder 클래스
     inner class OtherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val userAvatar: ImageView = itemView.findViewById(R.id.user_avatar) // 사용자 아바타 이미지뷰
+        val messageSender: TextView = itemView.findViewById(R.id.user_name) // 메시지 송신자뷰
         val messageText: TextView = itemView.findViewById(R.id.message_text) // 메시지 텍스트뷰
         val messageTime: TextView = itemView.findViewById(R.id.message_time) // 메시지 시간 텍스트뷰
     }
@@ -56,6 +57,7 @@ class ChatRVAdapter(private val messages: MutableList<Message>) : RecyclerView.A
             holder.messageText.text = message.text // 메시지 텍스트 설정
             holder.messageTime.text = message.time // 메시지 시간 설정
         } else if (holder is OtherViewHolder) { // 다른 사용자의 메시지 ViewHolder인 경우
+            holder.messageSender.text = "유저${message.userInfo.substring(message.userInfo.length-3,message.userInfo.length)}" // 메시지 송신자 설정
             holder.messageText.text = message.text // 메시지 텍스트 설정
             holder.messageTime.text = message.time // 메시지 시간 설정
         }

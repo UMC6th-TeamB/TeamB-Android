@@ -11,6 +11,7 @@ import com.smumc.smumc_6th_teamc_android.databinding.ActivityChatMenuBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.random.Random
 
 class ChatMenuActivity : AppCompatActivity(), ChatRoomView {
     companion object {
@@ -20,6 +21,7 @@ class ChatMenuActivity : AppCompatActivity(), ChatRoomView {
     private lateinit var binding: ActivityChatMenuBinding
     private lateinit var chatRoomAdapter: ChatRoomRVAdapter
     private var BEARER_TOKEN: String? = "" // 로그인 토큰 값 전달 받는 변수 초기화
+    private var user_id: String? = Random.nextInt(1, 6).toString() // 유저 아이디 난수 생성
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +39,6 @@ class ChatMenuActivity : AppCompatActivity(), ChatRoomView {
             onBackPressed()
         }
 
-        if(BEARER_TOKEN != null){
-            showChatScreen()
-        } else {
-            showNoMatchScreen()
-        }
-
         getChatRooms()
     }
 
@@ -57,9 +53,16 @@ class ChatMenuActivity : AppCompatActivity(), ChatRoomView {
     }
 
     private fun setupChatMenuScreen(chatRooms: ArrayList<ChatRoom>) {
+        if(chatRooms.isEmpty()){
+            showNoMatchScreen()
+        } else {
+            showChatScreen()
+        }
         chatRoomAdapter = ChatRoomRVAdapter(chatRooms) { chatRoom ->
             val intent = Intent(this, ChatActivity::class.java)
             intent.putExtra("CHAT_ROOM_ID", chatRoom.chatRoomId.toString())
+            intent.putExtra("BearerToken", BEARER_TOKEN) // 토큰 값 전달
+            intent.putExtra("Title", "${chatRoom.dateTime.substring(0, 10)} ${chatRoom.region}") // 제목 전달
             startActivity(intent)
         }
         binding.chatRoomRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -69,7 +72,7 @@ class ChatMenuActivity : AppCompatActivity(), ChatRoomView {
     private fun getChatRooms() {
         val chatRoomService = RestClient.getRetrofit().create(ChatRetrofitInterfaces::class.java)
         onGetChatRoomLoading()
-        chatRoomService.getChatRooms("Bearer $BEARER_TOKEN", "4").enqueue(object :
+        chatRoomService.getChatRooms("Bearer $BEARER_TOKEN", user_id.toString()).enqueue(object :
             Callback<ChatRoomRetrofitResult> {
             override fun onResponse(call: Call<ChatRoomRetrofitResult>, response: Response<ChatRoomRetrofitResult>) {
                 if (response.isSuccessful) {

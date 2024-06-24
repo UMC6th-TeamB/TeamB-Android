@@ -35,10 +35,17 @@ class ChatRoomViewHolder(private val binding: ChatRoomItemBinding) : RecyclerVie
 
     // 채팅방 데이터를 View에 바인딩하는 메서드
     fun bind(chatRoom: ChatRoom, onClick: (ChatRoom) -> Unit) {
-        binding.chatRoomDate.text = chatRoom.dateTime // 채팅방 날짜 설정
+        var time = ""
+        if(chatRoom.dateTime.substring(11, 13).toInt() > 12){
+            time = "오후 ${chatRoom.dateTime.substring(11, 13).toInt()-12}${chatRoom.dateTime.substring(13, 16)}"
+        } else {
+            time = "오전 ${chatRoom.dateTime.substring(11, 16)}"
+        }
+        binding.chatRoomDate.text = chatRoom.dateTime.substring(0, 10) // 채팅방 날짜 설정
         binding.chatRoomRegion.text = chatRoom.region // 채팅방 지역 설정
         binding.chatRoomMember.text = chatRoom.memberCount.toString() // 채팅방 멤버 수 설정
         binding.chatRoomMessage.text = chatRoom.lastMessage // 채팅방 메시지 설정
+        binding.chatRoomTime.text = time
         binding.root.setOnClickListener { onClick(chatRoom) } // 아이템 클릭 리스너 설정
     }
 }

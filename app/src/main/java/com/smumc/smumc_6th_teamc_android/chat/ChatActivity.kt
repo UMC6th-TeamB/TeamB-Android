@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit
 class ChatActivity : AppCompatActivity() {
 
     companion object {
-        private const val TAG = "ChatTest"
+        private const val TAG = "ChatA"
     }
 
     private lateinit var binding: ActivityChatBinding
@@ -50,6 +50,9 @@ class ChatActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = chatRVAdapter
 
+        //MapActivity에서 토큰 값 전달 받음
+        BEARER_TOKEN = intent.getStringExtra("BearerToken")
+
         mStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "ws://10.0.2.2:8080/ws")
 
         setSupportActionBar(binding.toolbar)
@@ -60,18 +63,21 @@ class ChatActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        binding.title.text = intent.getStringExtra("Title")
+
         setupChatScreen()
         connectStomp()
 
         binding.sendButton.setOnClickListener {
             val messageText = binding.messageInput.text.toString()
             if (messageText.isNotBlank()) {
-                val message = Message(messageText, "나", true, mTimeFormat.format(Date()))
+                val message = Message(messageText, "${BEARER_TOKEN}", true, mTimeFormat.format(Date()))
                 chatRVAdapter.addMessage(message)
                 binding.messageInput.text.clear()
                 binding.recyclerView.scrollToPosition(chatRVAdapter.itemCount - 1)
 //                sendRestEcho(message)
-                sendEchoViaStomp(messageText, "나")
+                Log.d(TAG, "token ${BEARER_TOKEN.toString()}")
+                sendEchoViaStomp(messageText, "${BEARER_TOKEN}")
             }
         }
 
@@ -207,8 +213,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun addItem(echoModel: EchoModel) {
-        val currentUser = "나"
-        if (echoModel.sender == currentUser) {
+        if (echoModel.sender.equals("${BEARER_TOKEN}")) {
             return
         }
         val message = Message(echoModel.content ?: "", echoModel.sender ?: "Unknown", false, mTimeFormat.format(Date()))
